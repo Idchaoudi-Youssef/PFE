@@ -1,6 +1,5 @@
 import { useState} from 'react';
 import '@Css/floatingLabel.css';
-import '@Css/Login.css';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 export default function Login() {
@@ -90,7 +89,7 @@ export default function Login() {
                 <span className="text-danger mt-3">message</span>
               </div>
 
-              <a href="javascript:void(0)" className="pass-forgot">
+              <a href="#" className="pass-forgot">
                 Forgot your password?
               </a>
 
@@ -100,7 +99,6 @@ export default function Login() {
                   <i className="fa fa-check"></i>
                 </button>
               </div>
-
               <p>
                 Not a member?{' '}
                 <a href="{{route('register')}}" className="theme-color">
