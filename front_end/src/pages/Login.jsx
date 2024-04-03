@@ -19,7 +19,7 @@ export default function Login() {
           <div className="box">
             <form method="POST" action="{{route('login')}}">
               <div className="login-title">
-                <h2>Login</h2>
+                <h2>Loginhrban</h2>
               </div>
               <div className="input">
                 <label
