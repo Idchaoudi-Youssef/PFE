@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"],
+            "@Header/*":["src/Components/Header/*"],
+            "@Layouths/*":["src/Components/Layouths/*"],
+            "@Pages/*":["src/pages/*"],
+            "@Css/*":["src/css/*"],
+            "@Components/*":["src/Components/*"],
+            "@Public/*":["public/*"],
+            
+
+
+        }
+
+    }
+}
