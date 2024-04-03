@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import { useState} from 'react';
 import '@Css/Login.css';
 export default function Login() {
   const [emailFocused, setEmailFocused] = useState(false);
@@ -14,7 +14,7 @@ export default function Login() {
 
   return (
     <>
-      <div className="login-section">
+      <div className="login-section bg-black">
         <div className="materialContainer">
           <div className="box">
             <form method="POST" action="{{route('login')}}">
@@ -32,8 +32,7 @@ export default function Login() {
                   type="email"
                   id="name"
                   name="email"
-                  required=""
-                  autocomplete="name"
+                  required=""                
                   onClick={(event) => handleFocusEmail(event, 'email')}
                 />
                 <span className="text-danger mt-3">message</span>
@@ -52,7 +51,6 @@ export default function Login() {
                   className="block mt-1 w-full"
                   name="password"
                   required=""
-                  autocomplete="current-password"
                   onClick={(event) => handleFocusPassword(event, 'email')}
                 />
                 <span className="text-danger mt-3">message</span>
