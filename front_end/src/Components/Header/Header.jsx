@@ -8,7 +8,6 @@ import '@Public/assets/css/custom.css';
 import feather from 'feather-icons';
 import $ from 'jquery';
 import '@Css/Header.css';
-import '../../../public/assets/css/custom.css';
 
 export default function Header({children}) {
   useEffect(() => {

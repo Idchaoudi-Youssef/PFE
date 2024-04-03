@@ -1,8 +1,45 @@
-import '../../public/assets/css/vendors/font-awesome.css';
-import '../../public/assets/css/vendors/bootstrap.css';
-import '../../public/assets/css/demo4.css';
+import '@Public/assets/css/vendors/font-awesome.css';
+import '@Public/assets/css/vendors/bootstrap.css';
+import '@Public/assets/css/demo4.css';
+import { useEffect } from 'react';
+import $ from 'jquery';
 
 export default function Footer() {
+    useEffect(() => {
+      var contentwidth = $(window).width();
+      if (contentwidth < "576") {
+          $(".footer-title h5").append(
+              '<span class="according-menu"><i class="fas fa-chevron-down"></i></span>'
+          );
+          $(".footer-title").on("click", function () {
+              $(".footer-title")
+                  .removeClass("active")
+                  .find("span")
+                  .replaceWith(
+                      '<span class="according-menu"><i class="fas fa-chevron-down"></i></span>'
+                  );
+              $(".footer-content").slideUp("normal");
+              if ($(this).next().is(":hidden") == true) {
+                  $(this).addClass("active");
+                  $(this)
+                      .find("span")
+                      .replaceWith(
+                          '<span class="according-menu"><i class="fas fa-chevron-up"></i></span>'
+                      );
+                  $(this).next().slideDown("normal");
+              } else {
+                  $(this)
+                      .find("span")
+                      .replaceWith(
+                          '<span class="according-menu"><i class="fas fa-chevron-down"></i></span>'
+                      );
+              }
+          });
+          $(".footer-content").hide();
+      } else {
+          $(".footer-content").show();
+      }
+    },[])
     return (
         <>
            <footer className="footer-sm-space mt-5">
