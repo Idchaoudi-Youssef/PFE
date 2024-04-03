@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import '@Public/assets/css/style.css';
 import '@Public/assets/css/vendors/font-awesome.css';
 import '@Public/assets/css/vendors/bootstrap.css';
@@ -14,21 +14,24 @@ export default function Header({children}) {
     feather.replace(); // Replace all elements with `data-feather` attribute
 
     // Event listener for opening the navigation menu
-    $(".toggle-nav, .sidebar-toggle").on("click", function () {
+    $(".toggle-nav, .sidebar-toggle").on("click", function (e) {
+      e.preventDefault();
       $(".nav-menu").css("right", "0px");
       $(".mobile-poster").css("right", "0px");
       $(".bg-overlay").addClass("show");
     });
 
     // Event listener for closing the navigation menu
-    $(".back-btn, .bg-overlay").on("click", function () {
+    $(".back-btn, .bg-overlay").on("click", function (e) {
+      e.preventDefault();
       $(".nav-menu").css("right", "-410px");
       $(".mobile-poster").css("right", "-410px");
       $(".bg-overlay").removeClass("show");
     });
 
     // Toggle function for submenus
-    $(".menu-title, .menu-title-level1, .submenu-title").on("click", function () {
+    $(".menu-title, .menu-title-level1, .submenu-title").on("click", function (e) {
+      e.preventDefault();
       $(this).toggleClass("active");
       if ($(this).next().is(":hidden")) {
         $(this).find("span").html("-");
@@ -129,7 +132,7 @@ export default function Header({children}) {
           </div>
         </div>
       </div>
-      <div class="bg-overlay"></div>
+      <div className="bg-overlay"></div>
     </header>
   );
 }

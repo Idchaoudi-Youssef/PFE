@@ -14,7 +14,7 @@ export default function Login() {
                 </div>
                 <div className="input">
                 <label htmlFor="name">Email</label>
-                <input type="email" id="name" name="email" required="" autofocus="" autoComplete="name" />
+                <input type="email" id="name" name="email" required="" autoFocus autoComplete="name" />
                 <span className="text-danger mt-3">error message</span>
                 </div>
                 <div className="input">
