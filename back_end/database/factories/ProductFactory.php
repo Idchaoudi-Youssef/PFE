@@ -20,7 +20,7 @@ class ProductFactory extends Factory
         $prduct_name = $this->faker->unique()->words($nb=2,$asText = true);
         $slug = Str::slug($prduct_name);
         $image_name = $this->faker->numberBetween(1, 24) . '.jpg';
-        $image_path = 'assets/images/fashion/product/front/' . $image_name;
+        $image_path = base_path().'/public/assets/images/fashion/product/front/' . $image_name;
         $categorie_product = $this->faker->randomElement(['VET', 'INF']);
 
         return [
@@ -36,7 +36,8 @@ class ProductFactory extends Factory
             'images' => $image_path,
             'category_id' => $this->faker->numberBetween(8,17),
             'brand_id' => $this->faker->numberBetween(37,42),
-            'categorie_product' => $categorie_product 
+            'categorie_product' => $categorie_product,
+            'user_id' => $this->faker->numberBetween(1,2),
         ];
     }
 }

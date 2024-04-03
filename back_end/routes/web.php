@@ -97,3 +97,8 @@ Route::put('/Admin-UpdateCategories/{id}', [AdminController::class, 'updateCateg
 
 
 Route::get('/Admin-dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard.index');
+
+
+Route::get('/user/{id}/products', [UserController::class, 'getAllProductsByUserId'])->name('user.listproducts');
+
+Route::get('/user-AddProducts',[UserController::class,'createProducts'])->name('user.CreateProducts');

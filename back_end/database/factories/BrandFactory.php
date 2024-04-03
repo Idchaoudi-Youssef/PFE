@@ -17,12 +17,14 @@ class BrandFactory extends Factory
      */
     public function definition(): array
     {
-        $brand_name = $this->faker->unique()->words($nb=2,$asText = true);
+        $brand_name = $this->faker->randomElement(['Samsung', 'Apple', 'Huawei', 'Xiaomi', 'OnePlus']);
+        $image_name = $this->faker->numberBetween(1,5) . '.jpg';
+        $image_path = '/storage/assets/images/fashion/product/front/' . $image_name;
         $slug = Str::slug($brand_name);
         return [
             'name' => Str::title($brand_name),
             'slug'=>$slug,
-            'image' => $this->faker->numberBetween(1,6).'.jpg'
+            'image' => $image_path,
         ];
     }
 }

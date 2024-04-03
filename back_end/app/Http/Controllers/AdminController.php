@@ -149,7 +149,7 @@ class AdminController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255', 
-            'image' => 'nullable|image|mimes:jpeg,jpg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,jpg,pnj|max:2048',
         ]);
 
         $this->uploadImage($request, $validatedData);

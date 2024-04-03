@@ -75,7 +75,7 @@
                         <img src="assets/images/fashion/banner/1.jpg" class="bg-img blur-up lazyload" alt="">
                     </a>
                     <div class="banner-detail">
-                        <a href="javacript:void(0)" class="heart-wishlist">
+                        <a style="visibility: hidden;" href="javacript:void(0)" class="heart-wishlist">
                             <i class="far fa-heart"></i>
                         </a>
                         <span class="font-dark-30">26% <span>OFF</span></span>
@@ -87,6 +87,24 @@
                     </a>
                 </div>
             </div>
+
+            <div class="col-lg-4" style="visibility: hidden;">
+                <div class="collection-banner p-bottom p-center text-center">
+                    <a href="{{route('shop.informatique')}}" class="banner-img">
+                        <img src="assets/images/fashion/banner/materiel-informatique-pro.jpg" class="bg-img blur-up lazyload" alt="">
+                    </a>
+                    <div class="banner-detail">
+                        <a style="visibility: hidden" href="javacript:void(0)" class="heart-wishlist">
+                        </a>
+                        <span class="font-dark-30">36% <span>OFF</span></span>
+                    </div>
+                    <a href="{{route('shop.informatique')}}" class="contain-banner">
+                        <div class="banner-content with-big">
+                            <h2 class="mb-2">Electronics</h2>
+                        </div>
+                    </a>
+                </div>
+            </div>
             
             <div class="col-lg-4">
                 <div class="collection-banner p-bottom p-center text-center">
@@ -94,7 +112,7 @@
                         <img src="assets/images/fashion/banner/materiel-informatique-pro.jpg" class="bg-img blur-up lazyload" alt="">
                     </a>
                     <div class="banner-detail">
-                        <a href="javacript:void(0)" class="heart-wishlist">
+                        <a style="visibility: hidden" href="javacript:void(0)" class="heart-wishlist">
                         </a>
                         <span class="font-dark-30">36% <span>OFF</span></span>
                     </div>
@@ -115,7 +133,7 @@
         <div class="row m-0">
             <div class="col-12 p-0">
                 <div class="title-3 text-center">
-                    <h2>Our Category</h2>
+                    <h2>Our Products</h2>
                     <h5 class="theme-color">Our Collection (Clothes)</h5>
                 </div>
             </div>
@@ -226,7 +244,7 @@
         <div class="row m-0">
             <div class="col-12 p-0">
                 <div class="title-3 text-center">
-                    <h2>Our Category</h2>
+                    <h2>Our Products</h2>
                     <h5 class="theme-color">Our Collection (Electronics)</h5>
                 </div>
             </div>

@@ -91,7 +91,7 @@
                             </td>
                             <td>
                                 <a href="#">
-                                    <img src="{{ asset('storage/'.$brands->image) }}" class="blur-up lazyloaded" alt="{{$brands->name}}">
+                                    <img src="{{ asset($brands->image) }}" class="blur-up lazyloaded" alt="{{$brands->name}}">
                                 </a>                            
                             </td>
                             <td>

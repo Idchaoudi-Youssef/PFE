@@ -28,11 +28,7 @@
                 <li><a href="{{route('app.blog')}}" class="nav-link menu-title">Blog</a></li>
 
 
-                @auth
-                    @if(Auth::user()->utype === 'ADM')
-                        <li><a href="{{route('admin.index')}}" class="nav-link menu-title">Dashboard</a></li>
-                    @endif
-                @endauth
+               
 
             </ul>
         </div>
