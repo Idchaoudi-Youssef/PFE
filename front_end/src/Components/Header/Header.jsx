@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import '@src/public/assets/css/style.css';
-import '../../../public/assets/css/vendors/font-awesome.css';
-import '../../../public/assets/css/vendors/bootstrap.css';
-import '../../../public/assets/css/demo4.css';
-import '../../../public/assets/css/demo2.css';
+import '@Public/assets/css/style.css';
+import '@Public/assets/css/vendors/font-awesome.css';
+import '@Public/assets/css/vendors/bootstrap.css';
+import '@Public/assets/css/demo4.css';
+import '@Public/assets/css/demo2.css';
+import '@Public/assets/css/custom.css';
 import feather from 'feather-icons';
 import $ from 'jquery';
-import '../../css/Header.css';
+import '@Css/Header.css';
 import '../../../public/assets/css/custom.css';
 
 export default function Header({children}) {
