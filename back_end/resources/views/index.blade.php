@@ -187,11 +187,11 @@
                         </div>
                         <div class="cart-wrap">
                             <ul>
-                                
+
                                 <li>
                                     <a href="{{route('shop.product.details',['slug'=>$product->slug])}}" class="icon">
                                         <i class="fas fa-eye"></i>
-                                    </a> 
+                                    </a>
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" onclick="addProductToWishlist({{$product->id}},'{{$product->name}}' ,1,{{$product->regular_price}})" class="wishlist">
@@ -298,11 +298,11 @@
                         </div>
                         <div class="cart-wrap">
                             <ul>
-                                
+
                                 <li>
                                     <a href="{{route('shop.product.details',['slug'=>$product->slug])}}" class="icon">
                                         <i class="fas fa-eye"></i>
-                                    </a> 
+                                    </a>
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" onclick="addProductToWishlist({{$product->id}},'{{$product->name}}' ,1,{{$product->regular_price}})" class="wishlist">
@@ -441,7 +441,7 @@
                         <h2>New Trends</h2>
                         <h5 class="theme-color">Our Collection (Clothes)</h5>
                     </div>
-                
+
                     <div class="product-slider round-arrow">
                         <div>
                             <div class="row g-3">
@@ -461,14 +461,14 @@
                                                     </h4>
                                                     <div class="cart-wrap">
                                                         <ul>
-                                                            
-                
+
+
                                                             <li>
                                                                 <a href="{{route('shop.product.details',['slug'=>$product->slug])}}" class="icon">
                                                                     <i class="fas fa-eye"></i>
-                                                                </a> 
+                                                                </a>
                                                             </li>
-                
+
                                                             <li>
                                                                 <a href="javascript:void(0)" onclick="addProductToWishlist({{$product->id}},'{{$product->name}}' ,1,{{$product->regular_price}})" class="wishlist">
                                                                     <i data-feather="heart"></i>
@@ -491,7 +491,7 @@
                         <h2>New Trends</h2>
                         <h5 class="theme-color">Our Collection (Electronics)</h5>
                     </div>
-                
+
                     <div class="product-slider round-arrow">
                         <div>
                             <div class="row g-3">
@@ -511,13 +511,13 @@
                                                     </h4>
                                                     <div class="cart-wrap">
                                                         <ul>
-                                                            
+
                                                             <li>
                                                                 <a href="{{route('shop.product.details',['slug'=>$product->slug])}}" class="icon">
                                                                     <i class="fas fa-eye"></i>
-                                                                </a> 
+                                                                </a>
                                                             </li>
-                
+
                                                             <li>
                                                                 <a href="javascript:void(0)" onclick="addProductToWishlist({{$product->id}},'{{$product->name}}' ,1,{{$product->regular_price}})" class="wishlist">
                                                                     <i data-feather="heart"></i>
@@ -535,7 +535,7 @@
                     </div>
                 </div>
 
-                
+
             </div>
         </div>
     </div>
@@ -551,7 +551,7 @@
         <div class="row m-0">
             <div class="col-12 p-0">
                 <div class="title-3 text-center">
-                    <h2> Top Price 
+                    <h2> Top Price
                     </h2>
                 </div>
             </div>
@@ -568,14 +568,14 @@
                             </a>
                             <div class="circle-shape"></div>
                             <span class="background-text">{{ $product->category ?? 'Fashion' }}</span>
-                            
+
                             <div class="cart-wrap">
                                 <ul>
-                                    
+
                                     <li>
                                         <a href="{{route('shop.product.details',['slug'=>$product->slug])}}" class="icon">
                                             <i class="fas fa-eye"></i>
-                                        </a> 
+                                        </a>
                                     </li>
                                     <li>
                                         <a href="javascript:void(0)" onclick="addProductToWishlist({{$product->id}},'{{$product->name}}' ,1,{{$product->regular_price}})" class="wishlist">
@@ -619,9 +619,6 @@
                 </div>
                 @endforeach
             </div>
-
-
-
         </div>
     </div>
 </section>
@@ -629,7 +626,7 @@
 
 @push('scripts')
       <script>
-            
+
         function addProductToWishlist(id,name,quantity,price)
         {
             $.ajax({

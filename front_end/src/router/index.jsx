@@ -12,6 +12,7 @@ import UserLayouth from "@Layouths/UserLayouth.jsx"
 import SharedLayouth from "@Layouths/SharedLayouth.jsx"
 import GuestLayouth from "@Layouths/GuestLayouth.jsx"
 import AdminLayouth from "@Layouths/AdminLayouth.jsx"
+import SectionStart from "../Components/SectionStart";
 export const router = createBrowserRouter([
 
             {
@@ -91,7 +92,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "*",
-                element: <Notfound/>
+                element: <SectionStart/>
             }
 
 ])

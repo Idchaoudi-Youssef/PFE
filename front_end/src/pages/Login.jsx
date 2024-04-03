@@ -1,8 +1,12 @@
 import { useState} from 'react';
+import '@Css/floatingLabel.css';
 import '@Css/Login.css';
+import axios from '../api/axios';
+import { useNavigate } from 'react-router-dom';
 export default function Login() {
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
+
 
   const handleFocusEmail = (event, field) => {
     setEmailFocused(true);
@@ -11,15 +15,43 @@ export default function Login() {
   const handleFocusPassword = (event, field) => {
     setPasswordFocused(true);
   };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+ 
+      // Fetch the CSRF cookie first
+      axios.defaults.withCredentials = true;
+      axios.defaults.withXSRFToken = true;
+  try {
+    await axios.get('http://localhost:8000/sanctum/csrf-cookie');
+    await axios
+      .post('http://localhost:8000/login', {
+        email: email,
+        password: password,
+      });
+
+      
+      setEmail("");
+      setPassword("");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
-      <div className="login-section bg-black">
+      <div className="login-section">
         <div className="materialContainer">
           <div className="box">
-            <form method="POST" action="{{route('login')}}">
+            <form method="POST" action="{{route('login')}}" onSubmit={handleSubmit}>
               <div className="login-title">
-                <h2>Loginhrban</h2>
+                <h2 >Login</h2>
               </div>
               <div className="input">
                 <label
@@ -32,6 +64,7 @@ export default function Login() {
                   type="email"
                   id="name"
                   name="email"
+                  onChange={(e) => setEmail(e.target.value)}
                   required=""                
                   onClick={(event) => handleFocusEmail(event, 'email')}
                 />
@@ -50,6 +83,7 @@ export default function Login() {
                   id="pass"
                   className="block mt-1 w-full"
                   name="password"
+                  onChange={(e) => setPassword(e.target.value)}
                   required=""
                   onClick={(event) => handleFocusPassword(event, 'email')}
                 />
