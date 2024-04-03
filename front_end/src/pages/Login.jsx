@@ -1,49 +1,84 @@
-
-import '@Assets/css/demo2.css'
-import '@Assets/css/demo4.css'
-
+import React, { useState} from 'react';
+import '@Css/Login.css';
 export default function Login() {
-    return (
-        <>
-     <div className="login-section">
+  const [emailFocused, setEmailFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
+
+  const handleFocusEmail = (event, field) => {
+    setEmailFocused(true);
+  };
+
+  const handleFocusPassword = (event, field) => {
+    setPasswordFocused(true);
+  };
+
+  return (
+    <>
+      <div className="login-section">
         <div className="materialContainer">
-            <div className="box">
+          <div className="box">
             <form method="POST" action="{{route('login')}}">
-                <div className="login-title">
+              <div className="login-title">
                 <h2>Login</h2>
-                </div>
-                <div className="input">
-                <label htmlFor="name">Email</label>
-                <input type="email" id="name" name="email" required="" autofocus="" autoComplete="name" />
-                <span className="text-danger mt-3">error message</span>
-                </div>
-                <div className="input">
-                <label htmlFor="pass">Password</label>
-                <input type="password" id="pass" className="block mt-1 w-full" name="password" required="" autoComplete="current-password" />
-                <span className="text-danger mt-3">error message</span>
-                </div>
-                <a href="javascript:void(0)" className="pass-forgot">
+              </div>
+              <div className="input">
+                <label
+                  htmlFor="name"
+                  className={`floating-label ${emailFocused ? 'active' : ''}`}
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="name"
+                  name="email"
+                  required=""
+                  autocomplete="name"
+                  onClick={(event) => handleFocusEmail(event, 'email')}
+                />
+                <span className="text-danger mt-3">message</span>
+              </div>
+
+              <div className="input">
+                <label
+                  htmlFor="pass"
+                  className={`floating-label ${passwordFocused ? 'active' : ''}`}
+                >
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="pass"
+                  className="block mt-1 w-full"
+                  name="password"
+                  required=""
+                  autocomplete="current-password"
+                  onClick={(event) => handleFocusPassword(event, 'email')}
+                />
+                <span className="text-danger mt-3">message</span>
+              </div>
+
+              <a href="javascript:void(0)" className="pass-forgot">
                 Forgot your password?
-                </a>
-                <div className="button login">
+              </a>
+
+              <div className="button login">
                 <button type="submit">
-                    <span>Log In</span>
-                    <i className="fa fa-check" />
+                  <span>Log In</span>
+                  <i className="fa fa-check"></i>
                 </button>
-                </div>
-                <p>
-                Not a member?
+              </div>
+
+              <p>
+                Not a member?{' '}
                 <a href="{{route('register')}}" className="theme-color">
-                     Sign up now
+                  Sign up now
                 </a>
-                </p>
+              </p>
             </form>
-            </div>
+          </div>
         </div>
-        </div>
-
-
-
-        </>
-    )
+      </div>
+    </>
+  );
 }

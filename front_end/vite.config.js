@@ -13,7 +13,7 @@ export default defineConfig({
       '@Components': '/src/Components',
       '@Public': '/public',
       '@Assets': '/public/assets',
-
+      '@Js': '/public/assets/js',
     },
   },
 });
