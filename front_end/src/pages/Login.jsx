@@ -14,7 +14,7 @@ export default function Login() {
 
   return (
     <>
-      <div className="login-section bg-black">
+      <div className="login-section">
         <div className="materialContainer">
           <div className="box">
             <form method="POST" action="{{route('login')}}">
