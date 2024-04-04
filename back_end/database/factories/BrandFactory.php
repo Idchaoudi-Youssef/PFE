@@ -17,9 +17,9 @@ class BrandFactory extends Factory
      */
     public function definition(): array
     {
-        $brand_name = $this->faker->randomElement(['Samsung', 'Apple', 'Huawei', 'Xiaomi', 'OnePlus']);
-        $image_name = $this->faker->numberBetween(1,5) . '.jpg';
-        $image_path = '/storage/assets/images/fashion/product/front/' . $image_name;
+        $brand_name = $this->faker->unique()->words($nb=2,$asText = true);
+        $image_name = $this->faker->numberBetween(1,4) . '.jpg';
+        $image_path = 'assets/images/fashion/brand/' . $image_name;
         $slug = Str::slug($brand_name);
         return [
             'name' => Str::title($brand_name),

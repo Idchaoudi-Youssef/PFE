@@ -102,3 +102,7 @@ Route::get('/Admin-dashboard', [AdminController::class, 'dashboard'])->name('adm
 Route::get('/user/{id}/products', [UserController::class, 'getAllProductsByUserId'])->name('user.listproducts');
 
 Route::get('/user-AddProducts',[UserController::class,'createProducts'])->name('user.CreateProducts');
+
+Route::post('/User-StoreProducts',[UserController::class,'storeProducts'])->name('user.StoreProduct');
+
+Route::delete('/User-DeleteProducts/{id}',[UserController::class,'deleteProducts'])->name('user.deleteProduct');

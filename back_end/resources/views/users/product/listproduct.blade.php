@@ -389,7 +389,7 @@
                     <h2>Your Table is empty !</h2>
                     <div class="col-sm-5 col-7">
                         <div class="left-side-button float-start">
-                            <a href="{{route('products.create')}}" class="btn btn-solid-default btn fw-bold mb-0 ms-0">
+                            <a href="{{route('user.CreateProducts')}}" class="btn btn-solid-default btn fw-bold mb-0 ms-0">
                                 <i class="fas fa-arrow-left"></i> Add New products</a>
                         </div>
                     </div>

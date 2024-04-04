@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-8">
-                <form class="needs-validation" method="POST" action="{{route('')}}" enctype="multipart/form-data">
+                <form class="needs-validation" method="POST" action="{{route('user.StoreProduct')}}" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                     <div id="billingAddress" class="row g-4">
