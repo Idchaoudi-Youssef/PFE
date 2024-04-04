@@ -16,7 +16,8 @@ const UserApi = {
     // Implement the logout logic here (e.g., making a request to invalidate the session)
   },
   getUser: async () => {
-    return await axios.get(`${BASE_URL}/user`);
+    return await axios.get(`${BASE_URL}/api/user`);
+
   }
 };
 

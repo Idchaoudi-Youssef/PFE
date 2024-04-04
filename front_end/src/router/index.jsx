@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
                 element: <UserLayouth/>,
                 children: [
                     {
-                        path: "profile",
+                        path: "/profile",
                         element: <Profile/>
                     },
                     {
