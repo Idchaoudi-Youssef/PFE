@@ -95,9 +95,6 @@ export default function Header({children}) {
                           </ul>
                         </li>
                         <li>
-                          <a href="{{route('cart.index')}}" className="nav-link menu-title">Cart</a>
-                        </li>
-                        <li>
                           <a href="{{route('app.aboutus')}}" className="nav-link menu-title">About Us</a>
                         </li>
                         <li>
@@ -136,28 +133,22 @@ export default function Header({children}) {
       <div className="bg-overlay"></div>
     </header>
     
-    <div class="mobile-menu d-sm-none">
+    <div className="mobile-menu d-sm-none">
         <ul>
             <li>
-                <a href="demo3.php" class="active">
+                <a href="demo3.php" className="active">
                     <i data-feather="home"></i>
                     <span>Home</span>
                 </a>
             </li>
             <li>
-                <a href="javascript:void(0)">
+                <a href="#">
                     <i data-feather="align-justify"></i>
                     <span>Category</span>
                 </a>
             </li>
             <li>
-                <a href="javascript:void(0)">
-                    <i data-feather="shopping-bag"></i>
-                    <span>Cart</span>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:void(0)">
+                <a href="#">
                     <i data-feather="heart"></i>
                     <span>Wishlist</span>
                 </a>
