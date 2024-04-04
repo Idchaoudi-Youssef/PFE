@@ -165,7 +165,7 @@ class AdminController extends Controller
 
     private function uploadImage(Request $request, array &$formFields) {
             if($request->hasFile('image')){
-                $formFields['image'] = $request->file('image')->store('assets/images/fashion/brands','public');
+                $formFields['image'] = $request->file('image')->store('assets/images/fashion/brand','public');
             }
     }
 

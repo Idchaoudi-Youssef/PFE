@@ -14,11 +14,7 @@ class UserController extends Controller
         return view('users.index');
     }
 
-    public function getAlProductsByUserId($id){
-        // Récupère tous les produits appartenant à l'utilisateur spécifié par $userId
-        $products = Product::where('user_id', $id)->get();
-
-    }
+    
 
     public function getAllProductsByUserId(Request $request,$id){
         $page = $request->query("page");
@@ -121,7 +117,23 @@ class UserController extends Controller
 
     $product = Product::create($validatedData);
 
-    return redirect()->route('user.listproducts')->with('success', 'Product created successfully.');
+    return redirect()->route('user.listproducts',['id' => Auth::id()])->with('success', 'Product created successfully.');
 
 }
+
+    public function deleteProducts($id){
+        
+        $product = Product::find($id);
+        if ($product) {
+
+            $product->delete();
+
+            return redirect()->route('user.listproducts',['id' => Auth::id()])->with('success', 'Product created successfully.');
+        } else {
+            
+            return redirect()->route('user.listproducts',['id' => Auth::id()])->with('erreur', 'Lors de la suppression du produit, une erreur s\'est produite.');
+        }
+    }
+    
+
 }
