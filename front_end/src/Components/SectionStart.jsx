@@ -1,31 +1,37 @@
-import '@Public/assets/css/demo2.css'
-import '@Public/assets/css/demo4.css'
-import '@Public/assets/css/style.css'
-import '@Public/assets/css/custom.css'
-
-
-export default function SectionStart() {
+export default function SectionStart({ title, activeBreadcrumb }) {
     return (
         <>
-            <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h3>About Us</h3>
-                    <nav>
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="index.htm">
-                                    <i class="fas fa-home"></i>
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">About Us</li>
-                        </ol>
-                    </nav>
+            <section
+                className="breadcrumb-section section-b-space"
+                style={{ paddingTop: 20, paddingBottom: 20 }}
+            >
+                <ul className="circles">
+                    {[...Array(10)].map((_, index) => (
+                        <li key={index} />
+                    ))}
+                </ul>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <h3>{title}</h3>
+                            <nav>
+                                <ol className="breadcrumb">
+                                    <li className="breadcrumb-item">
+                                        <a href="index.htm">
+                                            <i className="fas fa-home" style={{ color: '#e87316' }} />
+                                        </a>
+                                    </li>
+                                    <li className={`breadcrumb-item ${activeBreadcrumb ? 'active' : ''}`} aria-current="page">
+                                        {title}
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </section>
             
-        </>                       
 
-        )
- }
+        </>
+    )
+}
