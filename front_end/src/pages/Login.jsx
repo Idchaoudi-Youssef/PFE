@@ -1,49 +1,36 @@
 import { useState } from 'react';
 import '@Css/floatingLabel.css';
-import axios from '../api/axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useUserContext } from '../context/UserContext';
 
 export default function Login() {
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const { login, setAuthenticated } = useUserContext();
 
   const handleFocusEmail = () => {
     setEmailFocused(true);
-}
+  };
 
   const handleFocusPassword = () => {
     setPasswordFocused(true);
   };
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    axios.defaults.withCredentials = true;
-    axios.defaults.withXSRFToken = true;
     try {
-      await axios.get('http://localhost:8000/sanctum/csrf-cookie');
-      const response = await axios.post('http://localhost:8000/login', {
-        email: email,
-        password: password,
-      });
-
-      if (response.status === 204) {
-        window.localStorage.setItem("authToken", 'data');
-        setEmail("");
-        setPassword("");
-        navigate("/");
-      }
+      await login(email, password);
+      setAuthenticated(true);
+      navigate('/');
     } catch (error) {
       setError(error.response.data.message);
     }
-
     setLoading(false);
   };
 
@@ -67,9 +54,10 @@ export default function Login() {
                   type="email"
                   id="name"
                   name="email"
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required=""
-                  onClick={handleFocusEmail}
+                  onFocus={handleFocusEmail}
                 />
                 <span className="text-danger mt-3"></span>
               </div>
@@ -86,9 +74,10 @@ export default function Login() {
                   id="pass"
                   className="block mt-1 w-full"
                   name="password"
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required=""
-                  onClick={handleFocusPassword}
+                  onFocus={handleFocusPassword}
                 />
                 <span className="text-danger mt-3">{error}</span>
               </div>
@@ -99,13 +88,15 @@ export default function Login() {
 
               <div className="button login flex justify-center items-center">
                 <button type="submit" disabled={loading}>
-                    <span>{loading ? 'Log In...': 'Log In'}</span>
-                    <i className="fa fa-check"></i>
+                  <span>{loading ? 'Log In...' : 'Log In'}</span>
+                  <i className="fa fa-check"></i>
                 </button>
-                </div>
+              </div>
               <p>
                 Not a member?{' '}
-                <Link to="/register" className="theme-color">Sign up now</Link>
+                <Link to="/register" className="theme-color">
+                  Sign up now
+                </Link>
               </p>
             </form>
           </div>
