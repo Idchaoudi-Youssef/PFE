@@ -28,22 +28,22 @@ class DatabaseSeeder extends Seeder
         
             // \App\Models\Brand::factory(4)->create();
             // \App\Models\Category::factory(6)->create();
-            // \App\Models\Product::factory(5)->create();
+            \App\Models\Product::factory(10)->create();
 
-            User::create([
-                'name' => 'Super',
-                'phone' => '123456789',
-                'email' => 'admin@gmail.com',
-                'password' => Hash::make('123456789'),
-                'utype' => 'ADM'
-            ]);
-            User::create([
-                'name' => 'Test',
-                'phone' => '0642548487',
-                'email' => 'test@gmail.com',
-                'password' => Hash::make('123456789'),
-                'utype' => 'USR'
-            ]);
-            $this->call(BrandSeeder::class);
+            // User::create([
+            //     'name' => 'Super',
+            //     'phone' => '123456789',
+            //     'email' => 'admin@gmail.com',
+            //     'password' => Hash::make('123456789'),
+            //     'utype' => 'ADM'
+            // ]);
+            // User::create([
+            //     'name' => 'Test',
+            //     'phone' => '0642548487',
+            //     'email' => 'test@gmail.com',
+            //     'password' => Hash::make('123456789'),
+            //     'utype' => 'USR'
+            // ]);
+            // $this->call(BrandSeeder::class);
     }
 }

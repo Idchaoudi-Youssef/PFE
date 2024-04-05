@@ -46,6 +46,7 @@
                             <th scope="col">price</th>
                             <th scope="col">availability</th>
                             <th scope="col">action</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -92,15 +93,7 @@
                             </td>
                             
                             <td>
-                                @if($item->model->stock_status == 'instock')
-                                    <a href="javascript:void(0)" class="icon" onclick="moveToCart('{{$item->rowId}}')">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                @else
-                                    <a href="javascript:void(0)" class="icon disabled">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                @endif
+                                
                                 <a href="javascript:void(0)" class="icon" onclick="removeFromWishlist('{{$item->rowId}}')">
                                     <i class="fas fa-times"></i>
                                 </a>

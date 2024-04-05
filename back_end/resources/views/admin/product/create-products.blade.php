@@ -102,6 +102,7 @@
                                 <option value="INF">Materiel Informatique</option>
                             </select>
                         </div>
+                        
                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                     <button class="btn btn-solid-default mt-4" type="submit">Ajouter Produit</button>
                 </form>
