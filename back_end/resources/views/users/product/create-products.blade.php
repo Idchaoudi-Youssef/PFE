@@ -59,11 +59,10 @@
                             </select>
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="featured" class="form-label">Featured</label>
+                        {{-- <div class="col-md-6" style="display:none">
                             <input type="number" class="form-control" id="featured" name="featured"
-                                placeholder="Featured">
-                        </div>
+                                placeholder="Featured" value="null">
+                        </div> --}}
 
                         <div class="col-md-6">
                             <label for="quantity" class="form-label">Quantity</label>
@@ -102,6 +101,7 @@
                                 <option value="INF">Materiel Informatique</option>
                             </select>
                         </div>
+                        
                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                     <button class="btn btn-solid-default mt-4" type="submit">Ajouter Produit</button>
                 </form>

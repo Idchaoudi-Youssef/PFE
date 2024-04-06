@@ -98,7 +98,7 @@ class UserController extends Controller
         'sale_price' => 'nullable|numeric',
         'SKU' => 'required|string|max:255',
         'stock_status' => 'required|string',
-        'featured' => 'required|boolean',
+        'featured' => 'nullable|boolean',
         'quantity' => 'required|numeric|min:1',
         'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
         'category_id' => 'required|exists:categories,id',
@@ -134,6 +134,31 @@ class UserController extends Controller
             return redirect()->route('user.listproducts',['id' => Auth::id()])->with('erreur', 'Lors de la suppression du produit, une erreur s\'est produite.');
         }
     }
+
+    public function waitingListProducts($id){
+        $products = Product::whereNull('featured')
+        ->inRandomOrder()
+        ->get();
     
+        return view('users.product.waitinglisteProduct', compact('products'));
+    }
+
+    public function approvedListProducts($id){
+        $products = Product::where('featured', 1)
+        ->where('user_id', $id)
+        ->inRandomOrder()
+        ->get();
+    
+        return view('users.product.approvedListProduct', compact('products'));
+    }
+    
+    public function rejectedListProducts($id){
+        $products = Product::where('featured', 0)
+        ->where('user_id', $id)
+        ->inRandomOrder()
+        ->get();
+    
+        return view('users.product.rejectedListProduct', compact('products'));
+    }
 
 }

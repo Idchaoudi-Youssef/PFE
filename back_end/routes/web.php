@@ -95,11 +95,19 @@ Route::get('/Admin-editCategories/{id}', [AdminController::class, 'editCategorie
 Route::put('/Admin-UpdateCategories/{id}', [AdminController::class, 'updateCategories'])->name('admin.UpdateCategorie');
 
 
+Route::get('/Admin-Veridedproducts', [AdminController::class, 'VerifiedproductsView'])->name('admin.Verifiedproducts');
+Route::post('/product/{product}/verify', [AdminController::class, 'verifyProduct'])->name('admin.product.verify');
+
 
 Route::get('/Admin-dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard.index');
 
 
 Route::get('/user/{id}/products', [UserController::class, 'getAllProductsByUserId'])->name('user.listproducts');
+Route::get('/user/{id}/waitingproducts', [UserController::class, 'waitingListProducts'])->name('user.waitinglist');
+Route::get('/user/{id}/approvedproducts', [UserController::class, 'approvedListProducts'])->name('user.approvedlist');
+Route::get('/user/{id}/rejectedproducts', [UserController::class, 'rejectedListProducts'])->name('user.rejectedlist');
+
+
 
 Route::get('/user-AddProducts',[UserController::class,'createProducts'])->name('user.CreateProducts');
 

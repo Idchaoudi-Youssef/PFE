@@ -201,7 +201,7 @@ class AdminController extends Controller
         'sale_price' => 'nullable|numeric',
         'SKU' => 'required|string|max:255',
         'stock_status' => 'required|string',
-        'featured' => 'required|boolean',
+        'featured' => 'nullable|boolean',
         'quantity' => 'required|numeric|min:1',
         'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
         'category_id' => 'required|exists:categories,id',
@@ -220,9 +220,9 @@ class AdminController extends Controller
 
     $product = Product::create($validatedData);
 
-    return redirect()->route('admin.products')->with('success', 'Product created successfully.');
+    return redirect()->route('admin.Verifiedproducts')->with('success', 'Product created successfully.');
 
-}
+    }      
 
 
 
@@ -283,10 +283,10 @@ class AdminController extends Controller
             // L'utilisateur existe, on peut le supprimer
             $product->delete();
             $products = Product::all();
-            return redirect()->route('admin.products')->with('success', 'Product deleted successfully.');
+            return redirect()->back()->with('success', 'Product deleted successfully.');
         } else {
             $products = Product::all();
-            return redirect()->route('admin.products')->with('erreur', 'Lors de la suppression du produit, une erreur s\'est produite.');
+            return redirect()->back()->with('error', 'Lors de la suppression du produit, une erreur s\'est produite.');
         }
     }
 
@@ -418,7 +418,7 @@ class AdminController extends Controller
     
         $product->update($validatedData);
 
-        return redirect()->route('admin.products')->with('success', 'Product created successfully.');
+        return redirect()->route('admin.Verifiedproducts')->with('success', 'Product created successfully.');
 
     }
 
@@ -426,6 +426,23 @@ class AdminController extends Controller
     {
         return view('admin.dashboard.index');
     }
+
+    public function VerifiedproductsView(){
+        $products = Product::all();
+        return view('admin.product.verified', compact('products'));
+    }
+
+    public function verifyProduct(Request $request, Product $product)
+{
+    $validated = $request->validate([
+        'featured' => 'required|in:0,1', // Assurez-vous que la valeur est soit 0, soit 1
+    ]);
+
+    $product->featured = $validated['featured'];
+    $product->save();
+
+    return back()->with('success', 'Product verification updated successfully.');
+}
 
 }
 

@@ -122,76 +122,7 @@
                                 
                                 </h3>
 
-                                {{-- <div class="color-image">
-                                    <div class="image-select">
-                                        <h5>Color :</h5>
-                                        <ul class="image-section">
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <img src="../assets/images/fashion/product/front/5.jpg"
-                                                        class="img-fluid blur-up lazyload" alt="">
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <img src="../assets/images/fashion/product/front/6.jpg"
-                                                        class="img-fluid blur-up lazyload" alt="">
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <img src="../assets/images/fashion/product/front/7.jpg"
-                                                        class="img-fluid blur-up lazyload" alt="">
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div> --}}
-
-                                {{-- <div id="selectSize" class="addeffect-section product-description border-product">
-                                    <h6 class="product-title size-text">select size
-                                        <a href="javascript:void(0)" data-bs-toggle="modal"
-                                            data-bs-target="#sizemodal">size chart</a>
-                                    </h6>
-
-                                    <h6 class="error-message">please select size</h6>
-
-                                    <div class="size-box">
-                                        <ul>
-                                            <li>
-                                                <a href="javascript:void(0)">s</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">m</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">l</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">xl</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <h6 class="product-title product-title-2 d-block">quantity</h6>
-
-                                    <div class="qty-box">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                            </span>
-                                            <input type="text" name="quantity" id="quantity"
-                                                class="form-control input-number" value="1">
-                                            <span class="input-group-prepend">
-                                                <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div> --}}
+                                
                                 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
                                 <!-- Votre bouton Commande -->
@@ -223,27 +154,6 @@
                                         </script>
                                         
                                         
-
-                                    {{-- <button class="fa fa-shopping-cart" onclick="window.dialog.showModal();">Open Dialog</button>
-                                    <dialog id="dialog">
-                                        <h2>Hello.</h2>
-                                        <p>A CSS-only modal based on the <a href="https://developer.mozilla.org/es/docs/Web/CSS/::backdrop" target="_blank">::backdrop</a> pseudo-class. Hope you find it helpful.</p>
-                                        <p>You can also change the styles of the <code>::backdrop</code> from the CSS.</p>
-                                        <button onclick="window.dialog.close();" aria-label="close" class="x">❌</button>
-                                    </dialog> --}}
-
-                                   
-
-                                    {{-- <a href="javascript:void(0)"  onclick="event.preventDefault();document.getElementById('addtocart').submit();" id="cartEffect" class="btn btn-solid hover-solid btn-animation">
-                                        <i class="fa fa-shopping-cart"></i>
-                                        <span>Add To Cart</span>
-                                        <form id="addtocart" method="post" action="{{route('cart.store')}}">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{$product->id}}">                                             
-                                            <input type="hidden" name="quantity" id="qty" value="1">
-                                        </form>
-                                    </a> --}}
-
                                 </div>
 
                                 <ul class="product-count shipping-order">
@@ -846,16 +756,10 @@
                                 </div>
                                 <div class="cart-wrap">
                                     <ul>
+                                       
                                         <li>
-                                            <a href="javascript:void(0)" class="addtocart-btn"
-                                                data-bs-toggle="modal" data-bs-target="#addtocart">
-                                                <i data-feather="shopping-bag"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#quick-view">
-                                                <i data-feather="eye"></i>
+                                            <a href="{{route('shop.product.details',['slug'=>$rproduct->slug])}}" class="icon">
+                                                <i class="fas fa-eye"></i>
                                             </a>
                                         </li>
 

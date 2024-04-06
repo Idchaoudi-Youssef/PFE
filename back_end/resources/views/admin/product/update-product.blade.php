@@ -81,7 +81,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
+{{-- 
                         <div class="col-md-6">
                             <label for="featured" class="form-label">Featured</label>
                             <input type="number" class="form-control @error('description') is-invalid @enderror" id="featured" name="featured"
@@ -89,7 +89,7 @@
                             @error('featured')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            </div>
+                            </div> --}}
 
                         <div class="col-md-6">
                             <label for="quantity" class="form-label">Quantity</label>

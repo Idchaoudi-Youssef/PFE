@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-        $table->unsignedBigInteger('user_id')->after('id'); // 'id' est une colonne existante après laquelle vous voulez ajouter 'user_id'
-        $table->foreign('user_id')->references('id')->on('users'); // Optionnel: ajouter une contrainte de clé étrangère
+            $table->boolean('featured')->nullable()->change();
         });
     }
 
@@ -23,8 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-
+            $table->boolean('featured')->nullable(false)->change();
         });
     }
 };

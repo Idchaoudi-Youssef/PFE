@@ -9,14 +9,42 @@ use Illuminate\Http\Request;
 class AppController extends Controller
 {
     public function index(){
-        $products = Product::where('categorie_product', 'VET')->inRandomOrder()->take(6)->get();
-        $productss = Product::where('categorie_product', 'INF')->inRandomOrder()->take(6)->get();
-        $latestProducts = Product::where('categorie_product', 'VET')->orderBy('created_at', 'desc')->take(5)->get();
-        $latestElectronics = Product::where('categorie_product', 'INF')->orderBy('created_at', 'desc')->take(5)->get();
-        $highSalePriceProducts = Product::orderBy('sale_price', 'desc')->take(10)->get();
+        $products = Product::where('categorie_product', 'VET')
+        ->where('featured', 1)
+        ->inRandomOrder()
+        ->take(6)
+        ->get();
+    
+    // Produits de la catégorie 'INF' vérifiés
+    $productss = Product::where('categorie_product', 'INF')
+        ->where('featured', 1)
+        ->inRandomOrder()
+        ->take(6)
+        ->get();
+    
+    // Derniers produits de la catégorie 'VET' vérifiés
+    $latestProducts = Product::where('categorie_product', 'VET')
+        ->where('featured', 1)
+        ->orderBy('created_at', 'desc')
+        ->take(5)
+        ->get();
+    
+    // Derniers produits de la catégorie 'INF' vérifiés
+    $latestElectronics = Product::where('categorie_product', 'INF')
+        ->where('featured', 1)
+        ->orderBy('created_at', 'desc')
+        ->take(5)
+        ->get();
+    
+    // Produits avec le prix de vente le plus élevé vérifiés
+    $highSalePriceProducts = Product::where('featured', 1)
+        ->orderBy('sale_price', 'desc')
+        ->take(10)
+        ->get();
 
 
         return view('index', ['products' => $products] , ['productss' => $productss, 'latestProducts' => $latestProducts, 'latestElectronics' => $latestElectronics , 'highSalePriceProducts' => $highSalePriceProducts]);
+    
     }
 
     public function aboutUs(){
