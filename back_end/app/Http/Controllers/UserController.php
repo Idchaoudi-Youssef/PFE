@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
@@ -159,6 +160,45 @@ class UserController extends Controller
         ->get();
     
         return view('users.product.rejectedListProduct', compact('products'));
+    }
+
+    public function profile(){
+        $user = Auth::user();
+        return view('users.profile', compact('user'));
+    }
+
+    public function updateUsers(Request $request , $id){
+        $user = User::find($id);
+    
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
+        $user->address = $request->input('address');
+        $user->city = $request->input('city');
+        $user->country = $request->input('country');
+        $user->state = $request->input('state');
+        $user->zip = $request->input('zip');
+        $user->utype = $request->input('utype');
+    
+        if($request->filled('password')) {
+            $password = $request->input('password');
+            $passwordConfirmation = $request->input('password_confirmation');
+    
+            if($password === $passwordConfirmation) {
+                $user->password = bcrypt($password);
+            } else {
+                return back()->withErrors(['password' => 'Password and confirmation do not match.']);
+            }
+        }
+    
+        $user->save();
+    
+        return redirect()->route('user.profile')->with('success', 'Utilisateur mis à jour avec succès.');
+    }
+
+    public function editUsers($id){
+        $user = User::find($id);
+        return view('users.edit', compact('user'));
     }
 
 }

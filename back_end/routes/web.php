@@ -114,3 +114,8 @@ Route::get('/user-AddProducts',[UserController::class,'createProducts'])->name('
 Route::post('/User-StoreProducts',[UserController::class,'storeProducts'])->name('user.StoreProduct');
 
 Route::delete('/User-DeleteProducts/{id}',[UserController::class,'deleteProducts'])->name('user.deleteProduct');
+
+Route::get('/User-Profile',[UserController::class,'profile'])->name('user.profile');
+Route::get('/User-editUsers/{id}', [UserController::class, 'editUsers'])->name('User.EditUser');
+Route::put('/User-UpdateUsers/{id}', [UserController::class, 'updateUsers'])->name('User.UpdateUser');
+
