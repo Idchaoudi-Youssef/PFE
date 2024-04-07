@@ -28,6 +28,7 @@ class User extends Authenticatable
         'state',
         'zip',
         'utype',
+        'email_verified_at'
     ];
 
     /**

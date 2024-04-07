@@ -201,4 +201,25 @@ class UserController extends Controller
         return view('users.edit', compact('user'));
     }
 
+    public function verifyEmail(Request $request){
+        [$createdAt,$id] = explode('///',base64_decode($request->hash));
+        $user = User::findOrFail($id);
+
+        if($user->created_at->toDateTimeString() !== $createdAt){
+            abort(403);
+        }
+
+        if($user->email_verified_at !== NULL) {
+            return response('Compte déja activé');
+        }
+
+        $name = $user->name;
+        $email = $user->email;
+        $user->fill([
+            'email_verified_at' => time()
+        ])->save();
+
+
+        return view('users.email_verified',compact('name','email'));
+    }
 }

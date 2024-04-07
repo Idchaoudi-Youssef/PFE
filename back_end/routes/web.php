@@ -27,6 +27,7 @@ Route::post('/contact-us/store',[AppController::class,'contactUsStore'])->name('
 Route::get('/blog',[AppController::class,'blog'])->name('app.blog');
 
 
+Route::get('/verify_email/{hash}',[UserController::class,'verifyEmail']);
 
 
 Auth::routes();
