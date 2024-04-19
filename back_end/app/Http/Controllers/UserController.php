@@ -178,7 +178,6 @@ class UserController extends Controller
         $user->country = $request->input('country');
         $user->state = $request->input('state');
         $user->zip = $request->input('zip');
-        $user->utype = $request->input('utype');
     
         if($request->filled('password')) {
             $password = $request->input('password');

@@ -80,13 +80,7 @@
                             <textarea class="form-control" id="address" name="address">{{ $user->address }}</textarea>
                         </div>
                 
-                        <div class="col-md-3">
-                            <label for="utype" class="form-label">Type</label>
-                            <select class="form-select custome-form-select" id="utype" name="utype" required>
-                                <option value="USR" @if($user->utype == 'USR') selected @endif>User</option>
-                                <option value="ADM" @if($user->utype == 'ADM') selected @endif>Admin</option>
-                            </select>
-                        </div>
+                        
                 
                         <div class="col-md-3">
                             <label for="city" class="form-label">City</label>
