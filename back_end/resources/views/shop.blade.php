@@ -71,7 +71,7 @@
                         </div>
 
                         
-
+                        
                         <div class="accordion-item category-price">
                             <h2 class="accordion-header" id="headingFour">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -87,43 +87,7 @@
                             </div>
                         </div>
 
-                        @if(request()->is('shop_vetement'))
-
-                        <div class="accordion-item category-price">
-                            <h2 class="accordion-header" id="headingFive">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseFive">
-                                    Size
-                                </button>
-                            </h2>
-
-                            <div id="collapseFive" class="accordion-collapse collapse show"
-                                aria-labelledby="headingFive" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <ul class="category-list">
-                                        <li>
-                                            <a href="javascript:void(0)">xs</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)">sm</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)">md</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)">lg</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)">xl</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)">xxl</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
+                        
                         
 
                         <div class="accordion-item category-rating">
@@ -233,7 +197,7 @@
             <div class="img-wrapper">
                 <div class="front">
                     <a href="{{route('shop.product.details',['slug'=>$product->slug])}}">
-                        <img src=" {{ asset('storage/'.$product->image) }}""
+                        <img src=" {{ asset('storage/'.$product->image) }}"
                             class="bg-img blur-up lazyload" alt="">
                     </a>
                 </div>
@@ -295,6 +259,7 @@
     </div>
         @endforeach
     </div>
+    
     {{$products->links("pagination.default")}}
 
 

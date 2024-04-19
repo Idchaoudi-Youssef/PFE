@@ -149,7 +149,7 @@ class AdminController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255', 
-            'image' => 'nullable|image|mimes:jpeg,jpg,pnj|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
         $this->uploadImage($request, $validatedData);
@@ -248,19 +248,32 @@ class AdminController extends Controller
         }
     }
 
+    // public function deleteCategories($id)
+    // {
+    //     $category = Category::find($id);
+    //     if ($category) {
+    //         // L'utilisateur existe, on peut le supprimer
+    //         $category->delete();
+    //         $categorie = Category::all();
+    //         return view('admin.categorie.listcategorie', compact('categorie'));
+    //     } else {
+    //         $categorie = Category::all();
+    //         return view('admin.categorie.listcategorie', compact('categorie'));
+    //     }
+    // }
+
     public function deleteCategories($id)
-    {
-        $category = Category::find($id);
-        if ($category) {
-            // L'utilisateur existe, on peut le supprimer
-            $category->delete();
-            $categorie = Category::all();
-            return view('admin.categorie.listcategorie', compact('categorie'));
-        } else {
-            $categorie = Category::all();
-            return view('admin.categorie.listcategorie', compact('categorie'));
-        }
+{
+    $category = Category::find($id);
+    if ($category) {
+        $category->delete();
+        // Redirect back to the category list with a success message
+        return redirect()->route('admin.categories')->with('success', 'Category deleted successfully.');
+    } else {
+        // Optionally, handle the case where the category doesn't exist
+        return redirect()->route('admin.categories')->with('error', 'Category not found.');
     }
+}
 
     public function deleteBrands($id)
     {
@@ -269,11 +282,11 @@ class AdminController extends Controller
             // L'utilisateur existe, on peut le supprimer
             $brand->delete();
             $brands = Brand::all();
-            return view('admin.brand.listbrand', compact('brands'));
+            return redirect()->route('admin.brands')->with('success', 'Brand deleted successfully.');
         } else {
             $brands = Brand::all();
-            return view('admin.brand.listbrand', compact('brands'));
-            }
+            return redirect()->route('admin.brands')->with('error', 'Brand not found.');
+        }
     }
 
     public function deleteProducts($id)
@@ -283,10 +296,10 @@ class AdminController extends Controller
             // L'utilisateur existe, on peut le supprimer
             $product->delete();
             $products = Product::all();
-            return redirect()->back()->with('success', 'Product deleted successfully.');
+            return redirect()->route('admin.categories')->with('error', 'Product deleted successfully.');
         } else {
             $products = Product::all();
-            return redirect()->back()->with('error', 'Lors de la suppression du produit, une erreur s\'est produite.');
+            return redirect()->route('admin.categories')->with('error', 'Brand not found.');
         }
     }
 
@@ -444,5 +457,9 @@ class AdminController extends Controller
     return back()->with('success', 'Product verification updated successfully.');
 }
 
+    public function Tabledashboard(){
+        $users = User::all();
+        return view('admin.dashboard.tables', compact('users'));
+    }
 }
 

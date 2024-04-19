@@ -40,7 +40,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-8">
-                <form class="needs-validation" method="POST" action="{{route('admin.StoreCategorie')}}" enctype="multipart/form-data">
+                <form class="needs-validation" method="POST" action="{{route('admin.StoreCategorie')}}" id="contactForm" enctype="multipart/form-data">
                     @csrf
                     <div id="billingAddress" class="row g-4">
                         <h3 class="mb-3 theme-color">Formulaire Categories</h3>
@@ -57,11 +57,30 @@
                     
                         
                         
-                        <button class="btn btn-solid-default mt-4" type="submit">Ajouter</button>
+                        <button class="btn btn-solid-default mt-4" type="submit" onclick="submitForm(event)">Ajouter</button>
                         
                     </div>
                 
                 </form>
+
+                <script>
+                    function submitForm(event) {
+                        event.preventDefault(); 
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, send it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('contactForm').submit(); 
+                            }
+                        });
+                    }
+                </script>
             </div>
 
             

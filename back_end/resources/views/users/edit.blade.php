@@ -40,7 +40,7 @@
 
 
 
-                <form class="needs-validation" method="POST" action="{{ route('User.UpdateUser', $user->id) }}">
+                <form class="needs-validation" method="POST" action="{{ route('User.UpdateUser', $user->id) }}" id="contactForm">
                     @csrf
                     @method('PUT') 
                     <div id="billingAddress" class="row g-4">
@@ -92,6 +92,11 @@
                             <label for="country" class="form-label">Country</label>
                             <select class="form-select custome-form-select" id="country" name="country">
                                 <option>India</option>
+                                <option>UK</option>
+                                <option>USA</option>
+                                <option>Canada</option>
+                                <option>Australia</option>
+                                <option>Other</option>
                             </select>
                             <div class="invalid-feedback">
                                 Please select a valid country.
@@ -133,15 +138,33 @@
                         </div>
                         <div class="col-md-3">
                             <label for="zip" class="form-label">Zip</label>
-                            <input type="text" class="form-control" id="zip" name="zip" placeholder="123456" placeholder="{{$user->zip}}">
+                            <input type="text" class="form-control" id="zip" name="zip"  placeholder="{{$user->zip}}">
                         </div>
 
 
                         
-                        <button class="btn btn-solid-default mt-4" type="submit">Mettre à jour</button>
+                        <button class="btn btn-solid-default mt-4" type="submit" onclick="submitForm(event)">Mettre à jour</button>
                     </div>
                 </form>
 
+                <script>
+                    function submitForm(event) {
+                        event.preventDefault(); 
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, send it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('contactForm').submit(); 
+                            }
+                        });
+                    }
+                </script>
 
 
 

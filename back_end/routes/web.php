@@ -19,6 +19,10 @@ use App\Http\Controllers\WishlistController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/dashboarddd', function () {
+    return view('admin.dashboard.index');
+});
+Route::get('/Tabledashboard', [AdminController::class, 'Tabledashboard'])->name('admin.tables');
 
 Route::get('/',[AppController::class,'index'])->name('app.index');
 Route::get('/about-us',[AppController::class,'aboutUs'])->name('app.aboutus');
@@ -120,3 +124,10 @@ Route::get('/User-Profile',[UserController::class,'profile'])->name('user.profil
 Route::get('/User-editUsers/{id}', [UserController::class, 'editUsers'])->name('User.EditUser');
 Route::put('/User-UpdateUsers/{id}', [UserController::class, 'updateUsers'])->name('User.UpdateUser');
 
+Route::get('/dashboard-check', [UserController::class, 'verifyAndRedirect'])->name('dashboard.verify');
+Route::get('/dashboard-check', [UserController::class, 'verifyAndRedirect'])->name('dashboard.verify');
+
+//verifier mail
+Route::get('/email/verify', [UserController::class, 'verifyEmails'])->name('verification.notice');
+
+Route::get('/search', [ShopController::class, 'search'])->name('search.products');

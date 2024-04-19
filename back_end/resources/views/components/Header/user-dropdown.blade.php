@@ -1,37 +1,61 @@
 
-    <li class="onhover-dropdown">
-        <div class="cart-media name-usr">
-            @auth <span>{{ Auth::user()->name }}</span> @endauth <i data-feather="user"></i>
-        </div>
-        <div class="onhover-div profile-dropdown">
-            <ul>
-                @if(Route::has('login'))
-                    @auth
-                        @if(Auth::user()->utype === 'ADM')
-                            <li>
-                                <a href="{{route('admin.index')}}" class="d-block">Dashboard</a>
-                            </li>
-                        @else
-                            <li>
-                                <a href="{{route('user.index')}}" class="d-block">My Account</a>
-                            </li>
-                        @endif
-                        <li>
-                            <a href="{{route('logout')}}" onclick="event.preventDefault();document.getElementById('frmlogout').submit();" class="d-block">Logout</a>
-                            <form id="frmlogout" action="{{route('logout')}}" method="POST">
-                                @csrf
-                            </form>
-                        </li>
-                    @else
-                        <li>
-                            <a href="{{route('login')}}" class="d-block">Login</a>
-                        </li>
-                        <li>
-                            <a href="{{route('register')}}" class="d-block">Register</a>
-                        </li>
-                    @endauth                                                    
+<li class="onhover-dropdown">
+    <div class="cart-media name-usr">
+        @auth
+            <span>{{ Auth::user()->name }}</span> 
+        @endauth
+        <i data-feather="user"></i>
+    </div>
+    <div class="onhover-div profile-dropdown">
+        <ul>
+            @auth
+                @if(Auth::user()->utype === 'ADM')
+                    <li>
+                        <a href="{{ route('admin.index') }}" class="d-block">Dashboard</a>
+                    </li>
+                @else
+                    <li>
+                        <a href="{{ route('dashboard.verify') }}" class="d-block">My Account</a>
+                    </li>
                 @endif
-            </ul>
-        </div>
-    </li>
+                @if(!Auth::user()->email_verified_at && Auth::user()->utype === 'USR')
+                    
+                    <li>
+                        <a href="{{ route('verification.notice') }}" class="d-block" onclick="showVerificationAlert()">Verify Email</a>
+                    </li>
+                @endif
+                <script>
+                    function showVerificationAlert() {
+                        alert('A verification email has been sent to your email address.');
+                    }
+                </script>
+                @if(session('error'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ session('error') }}
+                    </div>
+                    <script>
+                        alert('{{ session('error') }}');
+                    </script>
+                @endif
+                <li>
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frmlogout').submit();" class="d-block">Logout</a>
+                    <form id="frmlogout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
+            @else
+                @if(Route::has('login'))
+                    <li>
+                        <a href="{{ route('login') }}" class="d-block">Login</a>
+                    </li>
+                @endif
+                @if(Route::has('register'))
+                    <li>
+                        <a href="{{ route('register') }}" class="d-block">Register</a>
+                    </li>
+                @endif
+            @endauth
+        </ul>
+    </div>
+    
 </li>

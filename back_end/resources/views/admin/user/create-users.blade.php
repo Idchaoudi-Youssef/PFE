@@ -36,7 +36,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-8">
-                <form class="needs-validation" method="POST" action="{{ route('admin.StoreUser') }}">
+                <form class="needs-validation" method="POST" action="{{ route('admin.StoreUser') }}" id="contactForm">
                     @csrf
                     <div id="billingAddress" class="row g-4">
                         <h3 class="mb-3 theme-color">Formulaire Users</h3>
@@ -93,6 +93,11 @@
                             <label for="country" class="form-label">Country</label>
                             <select class="form-select custome-form-select" id="country" name="country">
                                 <option>India</option>
+                                <option>UK</option>
+                                <option>USA</option>
+                                <option>Canada</option>
+                                <option>Australia</option>
+                                <option>Other</option>
                             </select>
                             <div class="invalid-feedback">
                                 Please select a valid country.
@@ -136,11 +141,30 @@
                             <label for="zip" class="form-label">Zip</label>
                             <input type="text" class="form-control" id="zip" name="zip" placeholder="123456">
                         </div>
-                        <button class="btn btn-solid-default mt-4" type="submit">Ajouter</button>
+                        <button class="btn btn-solid-default mt-4" type="submit" onclick="submitForm(event)">Ajouter</button>
                         
                     </div>
     
                 </form>
+
+                <script>
+                    function submitForm(event) {
+                        event.preventDefault(); 
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, send it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('contactForm').submit(); 
+                            }
+                        });
+                    }
+                </script>
             </div>
 
             

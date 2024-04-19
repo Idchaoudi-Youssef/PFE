@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-8">
-                <form class="needs-validation" method="POST" action="{{route('admin.StoreProduct')}}" enctype="multipart/form-data">
+                <form class="needs-validation" method="POST" action="{{route('admin.StoreProduct')}}" enctype="multipart/form-data" id="contactForm">
                     @csrf
                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                     <div id="billingAddress" class="row g-4">
@@ -103,10 +103,27 @@
                         </div>
                         
                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                    <button class="btn btn-solid-default mt-4" type="submit">Ajouter Produit</button>
+                    <button class="btn btn-solid-default mt-4" onclick="submitForm(event)" type="submit">Ajouter Produit</button>
                 </form>
+                <script>
+                    function submitForm(event) {
+                        event.preventDefault(); 
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, send it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('contactForm').submit(); 
+                            }
+                        });
+                    }
+                </script>
             </div>
-
             
         </div>
     </div>

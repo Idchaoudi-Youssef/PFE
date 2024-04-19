@@ -40,7 +40,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-8">
-                <form class="needs-validation" method="POST" action="{{ route('admin.UpdateCategorie', $categorie->id) }}" enctype="multipart/form-data">
+                <form class="needs-validation" method="POST" id="contactForm" action="{{ route('admin.UpdateCategorie', $categorie->id) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div id="billingAddress" class="row g-4">
@@ -58,11 +58,29 @@
                     
                         
                         
-                        <button class="btn btn-solid-default mt-4" type="submit">Update</button>
+                        <button class="btn btn-solid-default mt-4" type="submit" onclick="submitForm(event)">Update</button>
                         
                     </div>
                 
                 </form>
+                <script>
+                    function submitForm(event) {
+                        event.preventDefault(); 
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, send it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('contactForm').submit(); 
+                            }
+                        });
+                    }
+                </script>
             </div>
 
             

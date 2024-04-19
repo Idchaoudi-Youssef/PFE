@@ -6,8 +6,10 @@ use App\Models\User;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
+use App\Mail\WelcomeMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -78,7 +80,6 @@ class UserController extends Controller
             return view('users.product.listproduct',['products'=>$products,'page'=>$page,'size'=>$size,'order'=>$order,'brands'=>$brands,'q_brands'=>$q_brands,'categories'=>$categories,'q_categories'=>$q_categories,'from'=>$from,'to'=>$to]); 
     }
 
-    
 
     public function createProducts(){
             $categories = Category::all();
@@ -220,5 +221,30 @@ class UserController extends Controller
 
 
         return view('users.email_verified',compact('name','email'));
+    }
+
+    public function verifyAndRedirect() {
+        if (Auth::check()) {
+            $user = Auth::user();
+    
+            if ($user->email_verified_at !== null) {
+                if ($user->utype === 'ADM') {
+                    return redirect()->route('admin.dashboard');
+                } else {
+                    return redirect()->route('user.index');
+                }
+            } else {
+                return redirect()->route('app.index')->with('error', 'Votre email n est pas verifie.');
+
+            }
+        }
+            return redirect()->route('login');
+    }
+
+    public function verifyEmails(){
+            $user = auth()->user(); // Assurez-vous que l'utilisateur est connecté
+            Mail::to('bourhanelahmadi@gmail.com')->send(new WelcomeMail($user));
+             return redirect()->back()->with('success', 'E-mail de vérification envoyé.');
+        
     }
 }

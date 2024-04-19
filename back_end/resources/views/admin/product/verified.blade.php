@@ -148,4 +148,25 @@
         @endif
     </div>
 </section>
+
+@push('scripts')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    @if(session('success'))
+        Swal.fire({
+            title: 'Success!',
+            text: '{{ session("success") }}', // This line safely injects a Laravel session variable
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    @elseif(session('error'))
+        Swal.fire({
+            title: 'Error!',
+            text: '{{ session("error") }}', // Likewise, this injects another session variable
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    @endif
+</script>
+@endpush
 @endsection

@@ -67,16 +67,7 @@
                                             <img src=" {{ asset('storage/'.$product->image) }}" class="img-fluid w-100 image_zoom_cls-0 blur-up lazyload" alt="{{$product->name}}">
                                         </div>
 
-                                        @if($product->images) 
-                                        @php 
-                                            $images = explode(',',$product->images);
-                                        @endphp  
-                                        @foreach ($images as $image)
-                                            <div>
-                                                <img src=" {{ asset('storage/'.$product->image) }}" class="img-fluid w-100 image_zoom_cls-1 blur-up lazyload" alt="">
-                                            </div>                                            
-                                        @endforeach 
-                                        @endif                                                                                  
+                                                                                                                         
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +114,7 @@
                                 </h3>
 
                                 
-                                <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                                {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
                                 <!-- Votre bouton Commande -->
                                 <div class="product-buttons">
@@ -750,7 +741,7 @@
                                 </div>
                                 <div class="back">
                                     <a href="{{route('shop.product.details',['slug'=>$rproduct->slug])}}">
-                                        <img src="" {{ asset('storage/'.$rproduct->image) }}"
+                                        <img src=" {{ asset('storage/'.$rproduct->image) }}"
                                             class="bg-img blur-up lazyload" alt="">
                                     </a>
                                 </div>

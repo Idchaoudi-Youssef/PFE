@@ -43,7 +43,7 @@
                                     marked *</p>
                             </div>
                         </div>
-                        <form action="{{route('contact.store')}}" method="POST">
+                        <form action="{{route('contact.store')}}" method="POST" id="contactForm">
                             @csrf
                             <div class="row g-4 mt-md-1 mt-2">
                                 <div class="col-md-6">
@@ -67,12 +67,30 @@
                                     <textarea class="form-control" id="commentaire" name="commentaire" rows="5" required></textarea>
                                 </div>
                                 <div class="col-auto">
-                                    <button type="submit" class="btn btn-solid-default">Submit</button>
-                                </div>
+                                    <button type="submit" class="btn btn-solid-default" onclick="submitForm(event)">Submit</button>
+                                    </div>
                             </div>
                         </form>
                     </div>
                 </div>
+                <script>
+                    function submitForm(event) {
+                        event.preventDefault(); 
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, send it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('contactForm').submit(); 
+                            }
+                        });
+                    }
+                </script>
 
                 <div class="col-lg-5">
                     <div class="contact-details">
@@ -85,7 +103,8 @@
                                 </div>
                                 <div class="contact-title">
                                     <h4>Address :</h4>
-                                    <p>NIT, Faridabad, Haryana, India</p>
+                                    <p> NIT, Faridabad, Rabat,
+                                        Maroc</p>
                                 </div>
                             </div>
 
@@ -95,7 +114,7 @@
                                 </div>
                                 <div class="contact-title">
                                     <h4>Phone Number :</h4>
-                                    <p>+1 0000000000</p>
+                                    <p>+212 6 21 58 69</p>
                                 </div>
                             </div>
 
@@ -105,7 +124,7 @@
                                 </div>
                                 <div class="contact-title">
                                     <h4>Email Address :</h4>
-                                    <p>contact@surfsidemedia.in</p>
+                                    <p>Shop@gmail.com</p>
                                 </div>
                             </div>
                         </div>

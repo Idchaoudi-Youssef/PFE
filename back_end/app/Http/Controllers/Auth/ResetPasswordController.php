@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use app\Models\User;
 
 class ResetPasswordController extends Controller
 {
@@ -25,5 +26,14 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
+    protected function redirectTo()
+    {
+        if(auth()->user()->utype == 'ADM'){
+            return route('admin.index');
+        }
+        elseif(auth()->user()->utype == 'USR'){
+            return route('user.index');
+        }
+    }
 }

@@ -54,6 +54,7 @@ class ShopController extends Controller
         $gategorieIds = Product::where('categorie_product', 'VET')->distinct()->pluck('category_id');
         $categories = Category::whereIn('id', $gategorieIds)->orderBy('name','ASC')->get();
         $q_categories = $request->query("categories");  
+
         $prange = $request->query("prange");
         if(!$prange)
             $prange = "0,500";
@@ -116,7 +117,7 @@ class ShopController extends Controller
         $brands = Brand::whereIn('id', $brandIds)->orderBy('name','ASC')->get();    
         $q_brands = $request->query("brands");
         
-        $gategorieIds = Product::where('categorie_product', 'VET')->distinct()->pluck('category_id');
+        $gategorieIds = Product::where('categorie_product', 'INF')->distinct()->pluck('category_id');
         $categories = Category::whereIn('id', $gategorieIds)->orderBy('name','ASC')->get();
         $q_categories = $request->query("categories");  
         $prange = $request->query("prange");
@@ -159,9 +160,66 @@ class ShopController extends Controller
 
     public function getCartAndWishlistCount()
     {
-        $cartCount = Cart::instance("cart")->Content()->count();
+        // $cartCount = Cart::instance("cart")->Content()->count();
         $wishlistcount = Cart::instance("wishlist")->Content()->count();
         return response()->json(['status'=>200,'cartCount'=>$cartCount,'wishlistCount'=>$wishlistcount]);
+    }
+
+    public function search(Request $request){
+        $page = $request->query("page");
+        $size = $request->query("size");
+        if(!$page)
+                $page = 1;
+        if(!$size)
+                $size = 12;
+        $order = $request->query("order");
+        if(!$order)
+        $order = -1;
+        $o_column = "";
+        $o_order = "";
+        switch($order)
+        {
+        case 1:
+                $o_column = "created_at";
+                $o_order = "DESC";
+                break;
+        case 2:
+                $o_column = "created_at";
+                $o_order = "ASC";
+                break;
+        case 3:
+                $o_column = "regular_price";
+                $o_order = "ASC";
+                break;  
+        case 4:
+                $o_column = "regular_price";
+                $o_order = "DESC";
+                break;
+        default:
+                $o_column = "id";
+                $o_order = "DESC";
+
+        }   
+        $brandIds = Product::where('categorie_product', 'INF')->distinct()->pluck('brand_id');
+        $brands = Brand::whereIn('id', $brandIds)->orderBy('name','ASC')->get();    
+        $q_brands = $request->query("brands");
+        
+        $gategorieIds = Product::where('categorie_product', 'VET')->distinct()->pluck('category_id');
+        $categories = Category::whereIn('id', $gategorieIds)->orderBy('name','ASC')->get();
+        $q_categories = $request->query("categories");  
+        $prange = $request->query("prange");
+        if(!$prange)
+            $prange = "0,500";
+        $from  = explode(",",$prange)[0];
+        $to  = explode(",",$prange)[1];
+
+        $query = $request->input('q');
+        $products = Product::where('name', 'LIKE', "%{$query}%")
+                        ->orWhere('slug', 'LIKE', "%{$query}%")
+                        ->paginate($size);
+
+
+        return view('shop',['products'=>$products,'page'=>$page,'size'=>$size,'order'=>$order,'brands'=>$brands,'q_brands'=>$q_brands,'categories'=>$categories,'q_categories'=>$q_categories,'from'=>$from,'to'=>$to]);   
     }
 
 }

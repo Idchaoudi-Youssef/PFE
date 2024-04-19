@@ -13,6 +13,52 @@
                                 <x-Header.user-dropdown/> 
                             </ul>
                         </div>
+
+
+                        
+                        {{-- <div class="search-full">
+                            <form method="GET" class="search-full" action="{{ route('search.products') }}">
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        <i data-feather="search" class="font-light"></i>
+                                    </span>
+
+                                    <input type="text" name="q" class="form-control search-type"
+                                        placeholder="Search here..">
+
+                                    <span class="input-group-text close-search">
+                                        <i data-feather="x" class="font-light"></i>
+                                    </span>
+
+                                </div>
+                            </form>
+                        </div> --}}
+
+
+                        <div class="search-full" >
+                            <form method="GET" action="{{ route('search.products') }}">
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        <button type="submit" class="btn btn-light search-icon-open">
+                                            <i data-feather="search" class="font-light"></i>
+                                        </button>
+                                    </span>
+
+                                    <input type="text" name="q" class="form-control search-type" placeholder="Search here..">
+
+                                    <span class="input-group-text">
+                                        <!-- Bouton pour fermer la recherche -->
+                                        <button type="button" class="btn btn-light close-search">
+                                            <i data-feather="x" class="font-light"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
