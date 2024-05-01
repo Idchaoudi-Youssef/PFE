@@ -131,3 +131,5 @@ Route::get('/dashboard-check', [UserController::class, 'verifyAndRedirect'])->na
 Route::get('/email/verify', [UserController::class, 'verifyEmails'])->name('verification.notice');
 
 Route::get('/search', [ShopController::class, 'search'])->name('search.products');
+
+// Route::post('/save-rating/{productId}',[ShopController::class,'saveRating'])->name('saveRating');

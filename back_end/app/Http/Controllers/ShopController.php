@@ -8,6 +8,8 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\ProductRating;
+use Illuminate\Support\Facades\Validator;
 
 class ShopController extends Controller
 {
@@ -221,5 +223,38 @@ class ShopController extends Controller
 
         return view('shop',['products'=>$products,'page'=>$page,'size'=>$size,'order'=>$order,'brands'=>$brands,'q_brands'=>$q_brands,'categories'=>$categories,'q_categories'=>$q_categories,'from'=>$from,'to'=>$to]);   
     }
+
+//     public function saveRating($id,Request $request){
+//         $validatore = Validator::make($request->all(), [
+//                 'name' => 'required|min:5',
+//                 'email' => 'required|email',
+//                 'comment' => 'required',
+//                 'rating' => 'required'
+//         ]);
+
+//         if($validatore->fails()){
+//                 return response()->json([
+//                         'status' => false,
+//                         'errors' => $validatore->errors()
+//                 ]);
+//         }
+
+//         $productRating = new ProductRating;
+//         $productRating->product_id = $id;
+//         $productRating->name = $request->name;
+//         $productRating->email = $request->email;
+//         $productRating->comment = $request->comment;
+//         $productRating->rating = $request->rating;
+//         $productRating->status = 0;
+//         $productRating->save();
+    
+//         session()->flash('success', 'Rating added successfully.');
+
+//         return response()->json([
+//                 'status' => true,
+//                 'message' => 'Rating added successfully.'
+//         ]);
+
+//         }
 
 }

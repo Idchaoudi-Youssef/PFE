@@ -1,6 +1,9 @@
 @extends('layouts.base')
 @push('styles')
     <link id="color-link" rel="stylesheet" type="text/css" href="{{asset('assets/css/demo2.css')}}">
+
+    
+            
 @endpush
 @section('content')
 <section class="breadcrumb-section section-b-space" style="padding-top:20px;padding-bottom:20px;">
@@ -239,8 +242,8 @@
                             <button class="nav-link" id="nav-question-tab" data-bs-toggle="tab"
                                 data-bs-target="#question" type="button">Q & A</button>
 
-                            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
-                                data-bs-target="#review" type="button">Review</button>
+                            {{-- <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
+                                data-bs-target="#reviews" type="button">Review</button> --}}
                         </div>
                     </nav>
 
@@ -438,281 +441,90 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="review">
-                            <div class="row g-4">
-                                <div class="col-lg-4">
-                                    <div class="customer-rating">
-                                        <h2>Customer reviews</h2>
-                                        <ul class="rating my-2 d-inline-block">
-                                            <li>
-                                                <i class="fas fa-star theme-color"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star theme-color"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star theme-color"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star"></i>
-                                            </li>
-                                        </ul>
-
-                                        <div class="global-rating">
-                                            <h5 class="font-light">82 Ratings</h5>
+                        {{-- <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <form action="{{route('saveRating',$product->id)}}" name="productRatingForm" method="POST" id="productRatingForm">
+                                        
+                                        <h3 class="h4 pb-3">Write a Review</h3>
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label for="name">Name</label>
+                                            <input type="text" class="form-control" name="name" id="name" placeholder="Name">
+                                            <p></p>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label for="email">Email</label>
+                                            <input type="text" class="form-control" name="email" id="email" placeholder="Email">
+                                            <p></p>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="rating">Rating</label>
+                                            <br>
+                                            <div class="rating-bourhan" style="width: 10rem">
+                                                <input id="rating-5" type="radio" name="rating" value="5"/><label for="rating-5"><i class="fas fa-3x fa-star"></i></label>
+                                                <input id="rating-4" type="radio" name="rating" value="4"/><label for="rating-4"><i class="fas fa-3x fa-star"></i></label>
+                                                <input id="rating-3" type="radio" name="rating" value="3"/><label for="rating-3"><i class="fas fa-3x fa-star"></i></label>
+                                                <input id="rating-2" type="radio" name="rating" value="2"/><label for="rating-2"><i class="fas fa-3x fa-star"></i></label>
+                                                <input id="rating-1" type="radio" name="rating" value="1"/><label for="rating-1"><i class="fas fa-3x fa-star"></i></label>
+                                            </div>
+                                            <p class="product-rating-error"></p>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="">How was your overall experience?</label>
+                                            <textarea name="comment"  id="comment" class="form-control" cols="30" rows="10" placeholder="How was your overall experience?"></textarea>
+                                            <p></p>
+                                        </div>
+                                        <div>
+                                            <button type="submit" class="btn btn-dark">Submit</button>
                                         </div>
 
-                                        <ul class="rating-progess">
-                                            <li>
-                                                <h5 class="me-3">5 Star</h5>
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 78%"
-                                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                                    </div>
-                                                </div>
-                                                <h5 class="ms-3">78%</h5>
-                                            </li>
-                                            <li>
-                                                <h5 class="me-3">4 Star</h5>
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 62%"
-                                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                                    </div>
-                                                </div>
-                                                <h5 class="ms-3">62%</h5>
-                                            </li>
-                                            <li>
-                                                <h5 class="me-3">3 Star</h5>
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 44%"
-                                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                                    </div>
-                                                </div>
-                                                <h5 class="ms-3">44%</h5>
-                                            </li>
-                                            <li>
-                                                <h5 class="me-3">2 Star</h5>
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 30%"
-                                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                                    </div>
-                                                </div>
-                                                <h5 class="ms-3">30%</h5>
-                                            </li>
-                                            <li>
-                                                <h5 class="me-3">1 Star</h5>
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 18%"
-                                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                                    </div>
-                                                </div>
-                                                <h5 class="ms-3">18%</h5>
-                                            </li>
-                                        </ul>
+                                    </form>
+                                
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-5">
+                               
+                                <div class="rating-group mb-4">
+                                   <span> <strong>Mohit Singh </strong></span>
+                                    <div class="star-rating mt-2" title="70%">
+                                        <div class="back-stars">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            
+                                           
+                                        </div>
+                                    </div>   
+                                    <div class="my-3">
+                                        <p>I went with the blue model for my new apartment and an very pleased with the purchase. I'm definitely someone not used to paying this much for furniture, and I am also anxious about buying online, but I am very happy with the quality of this couch. For me, it is the perfect mix of cushy firmness, and it arrived defect free. It really is well made and hopefully will be my main couch for a long time. I paid for the extra delivery & box removal, and had an excellent experience as well. I do tend move my own furniture, but with an online purchase this expensive, that helped relieved my anxiety about having a item this big open up in my space without issues. If you need a functional sectional couch and like the feel of leather, this really is a great choice.
+
+                                    </p>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-8">
-                                    <p class="d-inline-block me-2">Rating</p>
-                                    <ul class="rating mb-3 d-inline-block">
-                                        <li>
-                                            <i class="fas fa-star theme-color"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star theme-color"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star theme-color"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                    </ul>
-                                    <div class="review-box">
-                                        <form class="row g-4">
-                                            <div class="col-12 col-md-6">
-                                                <label class="mb-1" for="name">Name</label>
-                                                <input type="text" class="form-control" id="name"
-                                                    placeholder="Enter your name" required="">
-                                            </div>
-
-                                            <div class="col-12 col-md-6">
-                                                <label class="mb-1" for="id">Email Address</label>
-                                                <input type="email" class="form-control" id="id"
-                                                    placeholder="Email Address" required="">
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label class="mb-1" for="comments">Comments</label>
-                                                <textarea class="form-control" placeholder="Leave a comment here"
-                                                    id="comments" style="height: 100px" required=""></textarea>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <button type="submit"
-                                                    class="btn default-light-theme default-theme default-theme-2">Submit</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 mt-4">
-                                    <div class="customer-review-box">
-                                        <h4>Customer Reviews</h4>
-
-                                        <div class="customer-section">
-                                            <div class="customer-profile">
-                                                <img src="../assets/images/inner-page/review-image/1.jpg"
-                                                    class="img-fluid blur-up lazyload" alt="">
-                                            </div>
-
-                                            <div class="customer-details">
-                                                <h5>Mike K</h5>
-                                                <ul class="rating my-2 d-inline-block">
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                </ul>
-                                                <p class="font-light">I purchased my Tab S2 at Best Buy but I wanted
-                                                    to
-                                                    share my thoughts on Amazon. I'm not going to go over specs and
-                                                    such
-                                                    since you can read those in a hundred other places. Though I
-                                                    will
-                                                    say that the "new" version is preloaded with Marshmallow and now
-                                                    uses a Qualcomm octacore processor in place of the Exynos that
-                                                    shipped with the first gen.</p>
-
-                                                <p class="date-custo font-light">- Sep 08, 2021</p>
-                                            </div>
+                                <div class="rating-group mb-4">
+                                    <span class="author"><strong>Mohit Singh </strong></span>
+                                    <div class="star-rating mt-2" >
+                                        <div class="back-stars">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            
+                                           
                                         </div>
+                                    </div>   
+                                    <div class="my-3">
+                                        <p>I went with the blue model for my new apartment and an very pleased with the purchase. I'm definitely someone not used to paying this much for furniture, and I am also anxious about buying online, but I am very happy with the quality of this couch. For me, it is the perfect mix of cushy firmness, and it arrived defect free. It really is well made and hopefully will be my main couch for a long time. I paid for the extra delivery & box removal, and had an excellent experience as well. I do tend move my own furniture, but with an online purchase this expensive, that helped relieved my anxiety about having a item this big open up in my space without issues. If you need a functional sectional couch and like the feel of leather, this really is a great choice.
 
-                                        <div class="customer-section">
-                                            <div class="customer-profile">
-                                                <img src="../assets/images/inner-page/review-image/2.jpg"
-                                                    class="img-fluid blur-up lazyload" alt="">
-                                            </div>
-
-                                            <div class="customer-details">
-                                                <h5>Norwalker</h5>
-                                                <ul class="rating my-2 d-inline-block">
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                </ul>
-                                                <p class="font-light">Pros: Nice large(9.7") screen. Bright colors.
-                                                    Easy
-                                                    to setup and get started. Arrived on time. Cons: a bit slow on
-                                                    response, but expected as tablet is 2 generations old. But works
-                                                    fine and good value for the money.</p>
-
-                                                <p class="date-custo font-light">- Sep 08, 2021</p>
-                                            </div>
-                                        </div>
-
-                                        <div class="customer-section">
-                                            <div class="customer-profile">
-                                                <img src="../assets/images/inner-page/review-image/3.jpg"
-                                                    class="img-fluid blur-up lazyload" alt="">
-                                            </div>
-
-                                            <div class="customer-details">
-                                                <h5>B. Perdue</h5>
-                                                <ul class="rating my-2 d-inline-block">
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                </ul>
-                                                <p class="font-light">Love the processor speed and the sensitivity
-                                                    of
-                                                    the touch screen.</p>
-
-                                                <p class="date-custo font-light">- Sep 08, 2021</p>
-                                            </div>
-                                        </div>
-
-                                        <div class="customer-section">
-                                            <div class="customer-profile">
-                                                <img src="../assets/images/inner-page/review-image/4.jpg"
-                                                    class="img-fluid blur-up lazyload" alt="">
-                                            </div>
-
-                                            <div class="customer-details">
-                                                <h5>MSL</h5>
-                                                <ul class="rating my-2 d-inline-block">
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star theme-color"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fas fa-star"></i>
-                                                    </li>
-                                                </ul>
-                                                <p class="font-light">I purchased the Tablet May 2017 and now April
-                                                    2019
-                                                    I have to charge it everyday. I don't watch movies on it..just
-                                                    play
-                                                    a game or two while on lunch. I guess now I need to power it
-                                                    down
-                                                    for future use.</p>
-
-                                                <p class="date-custo font-light">- Sep 08, 2021</p>
-                                            </div>
-                                        </div>
+                                    </p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -806,3 +618,67 @@
 </section>
 <!-- product section end -->
 @endsection
+
+{{-- <script type="text/javascript">
+    $("#productRatingForm").submit(function(event){
+        event.preventDefault();
+
+        $.ajax({
+            url : '{{ route("saveRating",$product->id) }}',
+            type: 'POST',
+            data: $(this).serializeArray(),
+            dataType: 'json',
+            success: function(response) {
+                var errors = response.errors;
+
+
+               if(response.status == false) {
+                if(errors.name) {
+                        $("#name").addClass("is-invalid")
+                        .siblings("p")
+                        .addClass('invalid-feedback')
+                        .html(errors.name);
+                    }else{
+                        $("#name").removeClass("is-invalid")
+                        .siblings("p")
+                        .removeClass('invalid-feedback')
+                        .html('');
+                    }
+
+
+                    if(errors.email) {
+                        $("#email").addClass("is-invalid")
+                        .siblings("p")
+                        .addClass('invalid-feedback')
+                        .html(errors.email);
+                    }else{
+                        $("#email").removeClass("is-invalid")
+                        .siblings("p")
+                        .removeClass('invalid-feedback')
+                        .html('');
+                    }
+
+                    if(errors.comment) {
+                        $("#comment").addClass("is-invalid")
+                        .siblings("p")
+                        .addClass('invalid-feedback')
+                        .html(errors.comment);
+                    }else{
+                        $("#comment").removeClass("is-invalid")
+                        .siblings("p")
+                        .removeClass('invalid-feedback')
+                        .html('');
+                    }
+
+                    if(errors.rating) {
+                        $(".product-rating-error").html(errors.rating);
+                    }else{
+                        $(".product-rating-error").html('');
+                    } 
+               } else {
+
+               }
+            }
+        })
+    });
+</script> --}}
