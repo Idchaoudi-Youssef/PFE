@@ -55,7 +55,7 @@
                                         @php 
                                             $images = explode(',',$product->images);
                                         @endphp  
-                                        @foreach ($images /*$productImages*/ as $image)
+                                        @foreach ($productImages /*$productImages*/ as $image)
                                             <div>
                                                 <img src=" {{ asset('storage/'.$product->image) }}"
                                                     class="img-fluid blur-up lazyload" alt="">
