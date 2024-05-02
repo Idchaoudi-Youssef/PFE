@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Mail\WelcomeMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -246,5 +247,39 @@ class UserController extends Controller
             Mail::to('bourhanelahmadi@gmail.com')->send(new WelcomeMail($user));
              return redirect()->back()->with('success', 'E-mail de vérification envoyé.');
         
+    }
+
+    public function ViewResetPassword(Request $request , $id){
+        $user = User::find($id);
+        return view('users.resetPassword' , compact('user'));
+    }
+
+    
+
+
+
+    public function ResetPassword(Request $request, $id)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = User::find($id);
+
+        
+
+        if (!Hash::check($request->old_password, $user->password)) {
+            return back()->withErrors(['old_password' => 'L\'ancien mot de passe est incorrect.']);
+        }
+
+        if ($request->new_password !== $request->new_password_confirmation) {
+            return back()->withErrors(['new_password_confirmation' => 'La confirmation du nouveau mot de passe ne correspond pas.']);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->route('user.profile')->with('success', 'Votre mot de passe a été réinitialisé avec succès.');
     }
 }

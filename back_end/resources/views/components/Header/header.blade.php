@@ -15,27 +15,6 @@
                         </div>
 
 
-                        
-                        {{-- <div class="search-full">
-                            <form method="GET" class="search-full" action="{{ route('search.products') }}">
-                                <div class="input-group">
-
-                                    <span class="input-group-text">
-                                        <i data-feather="search" class="font-light"></i>
-                                    </span>
-
-                                    <input type="text" name="q" class="form-control search-type"
-                                        placeholder="Search here..">
-
-                                    <span class="input-group-text close-search">
-                                        <i data-feather="x" class="font-light"></i>
-                                    </span>
-
-                                </div>
-                            </form>
-                        </div> --}}
-
-
                         <div class="search-full" >
                             <form method="GET" action="{{ route('search.products') }}">
                                 <div class="input-group">
@@ -57,8 +36,6 @@
                                 </div>
                             </form>
                         </div>
-
-
                     </div>
                 </div>
             </div>

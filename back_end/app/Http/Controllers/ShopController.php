@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Models\ProductRating;
 use Illuminate\Support\Facades\Validator;
@@ -144,21 +145,26 @@ class ShopController extends Controller
         return view('shop',['products'=>$products,'page'=>$page,'size'=>$size,'order'=>$order,'brands'=>$brands,'q_brands'=>$q_brands,'categories'=>$categories,'q_categories'=>$q_categories,'from'=>$from,'to'=>$to]);   
     }
     public function productDetails($slug)
-{
-    $product = Product::where('slug', $slug)->first();
-    $rproducts = Product::where('slug', "!=", $slug)->inRandomOrder()->take(8)->get();
+        {
+        
+        $product = Product::where('slug', $slug)->first();
+        $rproducts = Product::where('slug', "!=", $slug)->inRandomOrder()->take(8)->get();
+        
+        $productImages = ProductImage::where('product_id', $product->id)->get();
+        
+        
 
-
-    $userId = $product->user_id;
-    $user = User::find($userId);
-    $phoneNumber = $user->phone;
-
-        return view('details', [
-        'product' => $product,
-        'rproducts' => $rproducts,
-        'phoneNumber' => $phoneNumber
-    ]);
-}
+        $userId = $product->user_id;
+        $user = User::find($userId);
+        $phoneNumber = $user->phone;
+        // dd($productImages);
+                return view('details', [
+                'product' => $product,
+                'rproducts' => $rproducts,
+                'phoneNumber' => $phoneNumber,
+                'productImages' => $productImages
+        ]);
+        }
 
     public function getCartAndWishlistCount()
     {
@@ -224,37 +230,56 @@ class ShopController extends Controller
         return view('shop',['products'=>$products,'page'=>$page,'size'=>$size,'order'=>$order,'brands'=>$brands,'q_brands'=>$q_brands,'categories'=>$categories,'q_categories'=>$q_categories,'from'=>$from,'to'=>$to]);   
     }
 
-//     public function saveRating($id,Request $request){
-//         $validatore = Validator::make($request->all(), [
-//                 'name' => 'required|min:5',
-//                 'email' => 'required|email',
-//                 'comment' => 'required',
-//                 'rating' => 'required'
-//         ]);
+public function SshopCategory($category, Request $request)
+{
+    $page = $request->query("page", 1);
+    $size = $request->query("size", 12);
+    $order = $request->query("order", -1);
 
-//         if($validatore->fails()){
-//                 return response()->json([
-//                         'status' => false,
-//                         'errors' => $validatore->errors()
-//                 ]);
-//         }
+    // Define default ordering
+    $o_column = "id";
+    $o_order = "DESC";
+    switch($order) {
+        case 1:
+            $o_column = "created_at";
+            $o_order = "DESC";
+            break;
+        case 2:
+            $o_column = "created_at";
+            $o_order = "ASC";
+            break;
+        case 3:
+            $o_column = "regular_price";
+            $o_order = "ASC";
+            break;  
+        case 4:
+            $o_column = "regular_price";
+            $o_order = "DESC";
+            break;
+    }
+    $prange = $request->query("prange");
+    if(!$prange)
+        $prange = "0,500";
+    $from  = explode(",",$prange)[0];
+    $to  = explode(",",$prange)[1];
+    $brandIds = Product::where('categorie_product', 'VET')->distinct()->pluck('brand_id');
+    $brands = Brand::whereIn('id', $brandIds)->orderBy('name','ASC')->get();
+    $q_brands = $request->query("brands");
 
-//         $productRating = new ProductRating;
-//         $productRating->product_id = $id;
-//         $productRating->name = $request->name;
-//         $productRating->email = $request->email;
-//         $productRating->comment = $request->comment;
-//         $productRating->rating = $request->rating;
-//         $productRating->status = 0;
-//         $productRating->save();
-    
-//         session()->flash('success', 'Rating added successfully.');
+    $gategorieIds = Product::where('categorie_product', 'VET')->distinct()->pluck('category_id');
+    $categories = Category::whereIn('id', $gategorieIds)->orderBy('name','ASC')->get();
+    $q_categories = $request->query("categories"); 
+    $category = Category::where('name', $category)->first();
 
-//         return response()->json([
-//                 'status' => true,
-//                 'message' => 'Rating added successfully.'
-//         ]);
+    if ($category === null) {
+        return redirect()->route('error.page')->with('error', 'Category not found');
+    }
 
-//         }
+    $products = Product::where('category_id', $category->id)
+                        ->orderBy($o_column, $o_order)
+                        ->paginate($size);
+
+    return view('shopCategory', compact('products',  'category', 'page', 'size', 'order' , 'brands', 'q_brands', 'categories', 'q_categories' , 'prange', 'from', 'to'));
+}
 
 }

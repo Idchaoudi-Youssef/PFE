@@ -177,23 +177,7 @@
                             <div class="r-price">
                                 <div class="theme-color">${{$product->regular_price }} </div>
                                 <div class="main-price">
-                                    <ul class="rating mb-1 mt-0">
-                                        <li>
-                                            <i class="fas fa-star theme-color"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star theme-color"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                    </ul>
+                                    
                                 </div>
                             </div>
                             <p class="font-light mb-sm-2 mb-0">{{$product->name}}</p>
@@ -288,23 +272,7 @@
                             <div class="r-price">
                                 <div class="theme-color">${{$product->regular_price }} </div>
                                 <div class="main-price">
-                                    <ul class="rating mb-1 mt-0">
-                                        <li>
-                                            <i class="fas fa-star theme-color"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star theme-color"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                    </ul>
+                                    
                                 </div>
                             </div>
                             <p class="font-light mb-sm-2 mb-0">{{$product->name}}</p>
@@ -343,18 +311,23 @@
             </div>
             <div class="col-xxl-10 col-lg-9">
                 <div class="category-wrapper category-slider1 white-arrow category-arrow">
+
+
                     <div>
-                        <a href="shop-left-sidebar.html" class="category-wrap category-padding">
-                            <img src="assets/images/fashion/category/1.jpg" class="bg-img blur-up lazyload"
-                                alt="category image">
+                        <a href="{{ route('shopCategory', ['category' => 'Shoes']) }}" class="category-wrap category-padding">
+                            <img src="assets/images/fashion/category/1.jpg" class="bg-img blur-up lazyload" alt="category image">
                             <div class="category-content category-text-1">
                                 <h3 class="theme-color">Shoes</h3>
                                 <span class="text-dark">Fashion</span>
                             </div>
                         </a>
                     </div>
+
+
+
+
                     <div>
-                        <a href="shop-left-sidebar.html" class="category-wrap category-padding">
+                        <a href="{{ route('shopCategory', ['category' => 'Shoes']) }}" class="category-wrap category-padding">
                             <img src="assets/images/fashion/category/2.jpg" class="bg-img blur-up lazyload"
                                 alt="category image">
                             <div class="category-content category-text-1">
@@ -364,17 +337,17 @@
                         </a>
                     </div>
                     <div>
-                        <a href="shop-left-sidebar.html" class="category-wrap category-padding">
+                        <a href="{{ route('shopCategory', ['category' => 'phone']) }}" class="category-wrap category-padding">
                             <img src="assets/images/fashion/category/3.jpg" class="bg-img blur-up lazyload"
                                 alt="category image">
                             <div class="category-content category-text-1">
-                                <h3 class="theme-color">Jeans</h3>
+                                <h3 class="theme-color">phone   </h3>
                                 <span class="text-dark">Fashion</span>
                             </div>
                         </a>
                     </div>
                     <div>
-                        <a href="shop-left-sidebar.html" class="category-wrap category-padding">
+                        <a href="{{ route('shopCategory', ['category' => 'Jacket']) }}" class="category-wrap category-padding">
                             <img src="assets/images/fashion/category/4.jpg" class="bg-img blur-up lazyload"
                                 alt="category image">
                             <div class="category-content category-text-1">
@@ -384,11 +357,11 @@
                         </a>
                     </div>
                     <div>
-                        <a href="shop-left-sidebar.html" class="category-wrap category-padding">
+                        <a href="{{ route('shopCategory', ['category' => 'Casquet']) }}" class="category-wrap category-padding">
                             <img src="assets/images/fashion/category/3.jpg" class="bg-img blur-up lazyload"
                                 alt="category image">
                             <div class="category-content category-text-1">
-                                <h3 class="theme-color">Jeans</h3>
+                                <h3 class="theme-color">Casquete</h3>
                                 <span class="text-dark">Fashion</span>
                             </div>
                         </a>
@@ -561,23 +534,7 @@
                                 <div class="r-price">
                                     <div class="theme-color">${{ $product->sale_price }}</div>
                                     <div class="main-price">
-                                        <ul class="rating mb-1 mt-0">
-                                            <li>
-                                                <i class="fas fa-star theme-color"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star theme-color"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-star"></i>
-                                            </li>
-                                        </ul>
+                                        
                                     </div>
                                 </div>
                                 <p class="font-light mb-sm-2 mb-0">{{ $product->short_description }}</p>

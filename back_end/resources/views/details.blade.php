@@ -55,7 +55,7 @@
                                         @php 
                                             $images = explode(',',$product->images);
                                         @endphp  
-                                        @foreach ($images as $image)
+                                        @foreach ($images /*$productImages*/ as $image)
                                             <div>
                                                 <img src=" {{ asset('storage/'.$product->image) }}"
                                                     class="img-fluid blur-up lazyload" alt="">
@@ -154,7 +154,7 @@
                                     <li>
                                         <img src="../assets/images/gif/truck.png" class="img-fluid blur-up lazyload"
                                             alt="image">
-                                        <span class="lang">Free shipping for orders above $500 USD</span>
+                                        <span class="lang">Free shipping for orders above $75 USD</span>
                                     </li>
                                 </ul>
 
@@ -577,23 +577,7 @@
                             <div class="product-details">
                                 <div class="rating-details">
                                     <span class="font-light grid-content">Cupiditate Minus</span>
-                                    <ul class="rating mt-0">
-                                        <li>
-                                            <i class="fas fa-star theme-color"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star theme-color"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star"></i>
-                                        </li>
-                                    </ul>
+                                    
                                 </div>
                                 <div class="main-price">
                                     <a href="{{route('shop.product.details',['slug'=>$rproduct->slug])}}" class="font-default">

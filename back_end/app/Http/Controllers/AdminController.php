@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -190,39 +191,59 @@ class AdminController extends Controller
     
     public function storeProducts(Request $request)
     {
-
-        $data = $request->input();
+        // Valider les données d'entrée
         $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
-        'slug' => 'required|string|max:255|unique:products,slug',
-        'short_description' => 'nullable|string',
-        'description' => 'nullable|string',
-        'regular_price' => 'required|numeric',
-        'sale_price' => 'nullable|numeric',
-        'SKU' => 'required|string|max:255',
-        'stock_status' => 'required|string',
-        'featured' => 'nullable|boolean',
-        'quantity' => 'required|numeric|min:1',
-        'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
-        'category_id' => 'required|exists:categories,id',
-        'brand_id' => 'required|exists:brands,id',
-        'categorie_product' => 'nullable|string',
-        'user_id' => 'required|exists:users,id',
-
-    ]);
-
-    if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('assets/images/fashion/product/front','public');
-        $validatedData['image'] = $imagePath;
-        $validatedData['images'] = $imagePath;
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:products,slug',
+            'short_description' => 'nullable|string',
+            'description' => 'nullable|string',
+            'regular_price' => 'required|numeric',
+            'sale_price' => 'nullable|numeric',
+            'SKU' => 'required|string|max:255',
+            'stock_status' => 'required|string',
+            'featured' => 'nullable|boolean',
+            'quantity' => 'required|numeric|min:1',
+            'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
+            'imagess.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048', // Champ pour les images multiples
+            'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'required|exists:brands,id',
+            'categorie_product' => 'nullable|string',
+            'user_id' => 'required|exists:users,id',
+        ]);
+    
+        // Traiter l'image principale
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('assets/images/fashion/product/front', 'public');
+            $validatedData['image'] = $imagePath;
+            $validatedData['images'] = $imagePath;
+        }
+    
+        // Créer le produit
+        $validatedData['user_id'] = Auth::id();
+        $product = Product::create($validatedData);
+    
+        // Traiter les images multiples
+        if ($files = $request->file('imagess')) {
+            $imageData = [];
+            foreach ($files as $key => $file) {
+                $extension = $file->getClientOriginalExtension();
+                $filename = $key . '_' . time() . '.' . $extension;
+                $path = "assets/images/fashion/product/back/";
+                $file->move($path, $filename);
+                $imageData[] = [
+                    'product_id' => $product->id,
+                    'image' => $path . $filename,
+                ];
+            }
+    
+            // Assurez-vous que le modèle ProductImage existe et peut recevoir les images multiples
+            ProductImage::insert($imageData);
+        }
+    
+        // Redirection avec succès
+        return redirect()->route('admin.Verifiedproducts')->with('success', 'Product created successfully.');
     }
-    $validatedData['user_id'] = Auth::id();
-
-    $product = Product::create($validatedData);
-
-    return redirect()->route('admin.Verifiedproducts')->with('success', 'Product created successfully.');
-
-    }      
+       
 
 
 
@@ -408,7 +429,7 @@ class AdminController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255', 
+            'slug' => 'required|string|max:255',
             'short_description' => 'string',
             'description' => 'string',
             'regular_price' => 'numeric',
@@ -421,6 +442,7 @@ class AdminController extends Controller
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
             'categorie_product' => 'nullable|string',
+            'imagess.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048', 
 
         ]);
 
@@ -428,9 +450,27 @@ class AdminController extends Controller
             $imagePath = $request->file('image')->store('assets/images/fashion/product/front', 'public');
             $validatedData['image'] = $imagePath;
         }
-    
+
         $product->update($validatedData);
 
+    
+        if ($files = $request->file('images')) {
+            $imageData = [];
+            foreach ($files as $key => $file) {
+                $extension = $file->getClientOriginalExtension();
+                $filename = $key . '_' . time() . '.' . $extension;
+                $path = "assets/images/fashion/product/back/";
+    
+                $file->move($path, $filename);
+                $imageData[] = [
+                    'product_id' => $product->id,
+                    'image' => $path . $filename,
+                ];
+            }
+    
+            ProductImage::insert($imageData);
+        }
+        
         return redirect()->route('admin.Verifiedproducts')->with('success', 'Product created successfully.');
 
     }
@@ -446,16 +486,16 @@ class AdminController extends Controller
     }
 
     public function verifyProduct(Request $request, Product $product)
-{
-    $validated = $request->validate([
-        'featured' => 'required|in:0,1', // Assurez-vous que la valeur est soit 0, soit 1
-    ]);
+    {
+        $validated = $request->validate([
+            'featured' => 'required|in:0,1', // Assurez-vous que la valeur est soit 0, soit 1
+        ]);
 
-    $product->featured = $validated['featured'];
-    $product->save();
+        $product->featured = $validated['featured'];
+        $product->save();
 
-    return back()->with('success', 'Product verification updated successfully.');
-}
+        return back()->with('success', 'Product verification updated successfully.');
+    }
 
     public function Tabledashboard(){
         $users = User::all();

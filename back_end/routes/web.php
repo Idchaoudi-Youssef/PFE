@@ -133,3 +133,10 @@ Route::get('/email/verify', [UserController::class, 'verifyEmails'])->name('veri
 Route::get('/search', [ShopController::class, 'search'])->name('search.products');
 
 // Route::post('/save-rating/{productId}',[ShopController::class,'saveRating'])->name('saveRating');
+
+
+
+Route::get('/shopCategoryy/{category}', [ShopController::class, 'SshopCategory'])->name('shopCategory');
+
+Route::get('/reset/{id}', [UserController::class, 'ViewResetPassword'])->name('user.reset');
+Route::post('/User-Reset/{id}', [UserController::class, 'ResetPassword'])->name('User.ResetPassword');

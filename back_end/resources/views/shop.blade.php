@@ -38,6 +38,7 @@
 <section class="section-b-space">
     <div class="container">
         <div class="row">
+            @if (!request()->is('shopCategory*'))
             <div class="col-lg-3 category-side col-md-4">
                 <div class="category-option">
                     <div class="button-close mb-3">
@@ -119,6 +120,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             <div class="category-product col-lg-9 col-12 ratio_30">
 
@@ -225,23 +227,7 @@
             <div class="product-details">
                 <div class="rating-details">
                     <span class="font-light grid-content">{{$product->category->name}}</span>
-                    <ul class="rating mt-0">
-                        <li>
-                            <i class="fas fa-star theme-color"></i>
-                        </li>
-                        <li>
-                            <i class="fas fa-star theme-color"></i>
-                        </li>
-                        <li>
-                            <i class="fas fa-star"></i>
-                        </li>
-                        <li>
-                            <i class="fas fa-star"></i>
-                        </li>
-                        <li>
-                            <i class="fas fa-star"></i>
-                        </li>
-                    </ul>
+                    
                 </div>
                 <div class="main-price">
                     <a href="{{route('shop.product.details',['slug'=>$product->slug])}}" class="font-default">
@@ -252,7 +238,12 @@
                         <p class="font-light">{{$product->short_description}}</p>
                     </div>
                     <h3 class="theme-color">${{$product->regular_price}}</h3>
-                    <button class="btn listing-content">Add To Cart</button>
+                    {{-- <button class="btn listing-content">View Details</button> --}}
+                    <form action="{{route('shop.product.details',['slug'=>$product->slug])}}" method="GET">
+                        @csrf
+                        <button type="submit" class="btn listing-content">View Details</button>
+                    </form>
+                    
                 </div>
             </div>
         </div>
@@ -271,7 +262,7 @@
 </section>
 
 
-<section class="subscribe-section section-b-space">
+{{-- <section class="subscribe-section section-b-space">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-6">
@@ -292,7 +283,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> --}}
 <!-- Subscribe Section End -->
 <form id="frmFilter" method="GET">
     <input type="hidden" name="page" id="page" value="{{$page}}" />

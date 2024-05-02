@@ -76,6 +76,11 @@
                             <input type="file" class="form-control" id="image" name="image" placeholder="image" required accept="image/png, image/jpeg">
                         </div>
 
+                        <div class="col-md-6">
+                            <label for="imagess" class="form-label">Photos Supplémentaires</label>
+                            <input type="file" class="form-control" id="imagess" name="imagess[]" multiple accept="image/png, image/jpeg, image/webp">
+                        </div>
+
                         <div class="col-md-3">
                             <label for="category_id" class="form-label">Categories</label>
                             <select class="form-select custome-form-select" id="category_id" name="category_id">
