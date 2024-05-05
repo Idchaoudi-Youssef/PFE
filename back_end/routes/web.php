@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function(){
 
 Route::middleware(['auth','auth.admin'])->group(function(){
     Route::get('/admin',[AdminController::class,'index'])->name('admin.index');
+
 });
 
 Route::get('/Admin-Users',[AdminController::class,'getAllUsers'])->name('admin.users');
@@ -74,6 +75,9 @@ Route::get('/Admin-AddUsers',[AdminController::class,'createUsers'])->name('user
 Route::get('/Admin-AddBrands',[AdminController::class,'createBrands'])->name('brands.create');
 Route::get('/Admin-AddProducts',[AdminController::class,'createProducts'])->name('products.create');
 Route::get('/Admin-AddCategories',[AdminController::class,'createCategories'])->name('categorie.create');
+
+
+
 
 Route::post('/Admin-StoreUsers',[AdminController::class,'storeUsers'])->name('admin.StoreUser');
 Route::post('/Admin-StoreBrands',[AdminController::class,'storeBrands'])->name('admin.StoreBrand');
@@ -101,6 +105,8 @@ Route::put('/Admin-UpdateCategories/{id}', [AdminController::class, 'updateCateg
 
 
 Route::get('/Admin-Veridedproducts', [AdminController::class, 'VerifiedproductsView'])->name('admin.Verifiedproducts');
+
+
 Route::post('/product/{product}/verify', [AdminController::class, 'verifyProduct'])->name('admin.product.verify');
 
 
@@ -140,3 +146,13 @@ Route::get('/shopCategoryy/{category}', [ShopController::class, 'SshopCategory']
 
 Route::get('/reset/{id}', [UserController::class, 'ViewResetPassword'])->name('user.reset');
 Route::post('/User-Reset/{id}', [UserController::class, 'ResetPassword'])->name('User.ResetPassword');
+
+
+Route::get('/test' ,  function () {
+    return view('test');
+});
+
+
+
+Route::get('/user-AddProductss',[UserController::class,'testcreateProducts'])->name('user.testStore');
+Route::post('/User-StoreProductss',[UserController::class,'storeProducts'])->name('user.StoreProduct');

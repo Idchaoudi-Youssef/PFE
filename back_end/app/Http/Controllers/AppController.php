@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class AppController extends Controller
 {
@@ -37,13 +38,10 @@ class AppController extends Controller
         ->get();
     
     // Produits avec le prix de vente le plus élevé vérifiés
-    $highSalePriceProducts = Product::where('featured', 1)
-        ->orderBy('sale_price', 'desc')
-        ->take(10)
-        ->get();
+   
 
 
-        return view('index', ['products' => $products] , ['productss' => $productss, 'latestProducts' => $latestProducts, 'latestElectronics' => $latestElectronics , 'highSalePriceProducts' => $highSalePriceProducts]);
+        return view('index', ['products' => $products] , ['productss' => $productss, 'latestProducts' => $latestProducts, 'latestElectronics' => $latestElectronics ]);
     
     }
 
@@ -59,23 +57,30 @@ class AppController extends Controller
         return view('blog');
     }
 
-    public function contactUsStore(Request $request){
-        $validatedData = $request->validate([
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'email' => 'required|email',
-            'phone' => 'required|string|max:255',
-            'commentaire' => 'required|string',
-        ]);
-    
-        $contact = Contact::create([
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'commentaire' => $request->commentaire,
-        ]);
-    
-        return redirect()->route('app.contactus')->with('success', 'Categorie updated successfully');
-    }
+        public function contactUsStore(Request $request)
+        {
+            $validatedData = $request->validate([
+                'nom' => 'required|string|max:255',
+                'prenom' => 'required|string|max:255',
+                'email' => 'required|email',
+                'phone' => 'required|string|max:255',
+                'commentaire' => 'required|string',
+            ]);
+        
+            $contact = [
+                'nom' => $request->nom,
+                'prenom' => $request->prenom,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'commentaire' => $request->commentaire,
+            ];
+        
+            Mail::send('email-template', $contact, function($message) use ($contact) {
+                $message->from($contact['email'])
+                        ->to('bourhanelahmadi@gmail.com')
+                        ->subject('Nouveau message de ' . $contact['nom'] . ' ' . $contact['prenom']);
+            });
+        
+            return redirect()->route('app.contactus')->with('success', 'Contact details sent successfully');
+        }
 }

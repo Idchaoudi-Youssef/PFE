@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container my-2">
-        <img class='mx-auto w-25' src="{{ asset('logo.png')}}" alt="Logo">
+        <img class='mx-auto w-25' src=" {{ asset('assets/images/logo.png')}}" alt="Logo">
         <h1 class="title p-1">Confirm you account</h1>
         <h3>Hello {{ $name }}</h3>
         <p class="p-1">

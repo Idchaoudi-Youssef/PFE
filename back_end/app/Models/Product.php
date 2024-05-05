@@ -14,15 +14,11 @@ class Product extends Model
         'short_description', 
         'description', 
         'regular_price', 
-        'sale_price', 
-        'SKU', 
         'stock_status', 
         'featured', 
-        'quantity', 
-        'image', 
         'images', 
+        'imagess',
         'category_id', 
-        'brand_id', 
         'categorie_product',
         'user_id'];
 
@@ -31,13 +27,23 @@ class Product extends Model
         return $this->belongsTo(Category::class,'category_id');
     }
 
-    public function brand()
-    {
-        return $this->belongsTo(Brand::class,'brand_id');
-    }
+    // public function brand()
+    // {
+    //     return $this->belongsTo(Brand::class,'brand_id');
+    // }
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function specifications()
+    {
+        return $this->hasMany(ProductSpecification::class);
+    }
+
+    public function images()
+{
+    return $this->hasMany(ProductImage::class);
+}
 }

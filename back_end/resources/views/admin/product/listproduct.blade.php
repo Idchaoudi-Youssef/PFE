@@ -64,15 +64,7 @@
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body category-scroll">
                                     <ul class="category-list">
-                                        @foreach ($brands as $brand)
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it" id="br{{$brand->id}}" name="brands" @if(in_array($brand->id,explode(',',$q_brands))) checked="checked" @endif value="{{$brand->id}}" type="checkbox" onchange="filterProductsByBrand(this)">
-                                                <label class="form-check-label">{{$brand->name}}</label>
-                                                <p class="font-light">({{$brand->products->count()}})</p>
-                                            </div>
-                                        </li>
-                                        @endforeach
+                                        
                                         
                                     </ul>
                                 </div>
@@ -328,6 +320,7 @@
     <div class="row g-sm-4 g-3 row-cols-lg-4 row-cols-md-3 row-cols-2 mt-1 custom-gy-5 product-style-2 ratio_asos product-list-section">
         @if($products->Count() > 0)
             @foreach ($products as $product)  
+            @if($image->product_id == $product->id)
             <div class="product-box">
                 <div class="img-wrapper">
                     <div class="front">
@@ -381,7 +374,7 @@
                     </div>
                 </div>
             </div>
-        
+            @endif
             @endforeach
         @else
             <div class="row">
@@ -442,7 +435,6 @@
     <input type="hidden" name="page" id="page" value="{{$page}}" />
     <input type="hidden" name="size" id="size" value="{{$size}}" />      
     <input type="hidden" id="order" name="order" value="{{$order}}" /> 
-    <input type="hidden" id="brands" name="brands" value="{{$q_brands}}" />
     <input type="hidden" id="categories" name="categories" value="{{$q_categories}}" />
     <input type="hidden" name="prange" id="prange" value="" />
 </form>
@@ -459,21 +451,7 @@
             $("#frmFilter").submit(); 
             });
 
-            function filterProductsByBrand(brand)
-            {
-                var brands = "";
-                $("input[name='brands']:checked").each(function(){
-                    if(brands=="")
-                    {
-                        brands += this.value;
-                    }
-                    else{
-                        brands += "," + this.value;
-                    }
-                });
-                $("#brands").val(brands);
-                $("#frmFilter").submit();
-            }
+            
 
             $(function(){            
             $("#orderby").on("change",function(){

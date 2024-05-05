@@ -38,17 +38,9 @@
                                 placeholder="Regular Price">
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="sale_price" class="form-label">Sale Price</label>
-                            <input type="number" class="form-control" id="sale_price" name="sale_price"
-                                placeholder="Sale Price">
-                        </div>
+                        
 
-                        <div class="col-md-6">
-                            <label for="SKU" class="form-label">SKU</label>
-                            <input type="text" class="form-control" id="SKU" name="SKU"
-                                placeholder="SKU">
-                        </div>
+                        
 
                         <div class="col-md-3">
                             <label for="stock_status" class="form-label">Stock Status</label>
@@ -64,17 +56,10 @@
                                 placeholder="Featured" value="null">
                         </div> --}}
 
-                        <div class="col-md-6">
-                            <label for="quantity" class="form-label">Quantity</label>
-                            <input type="number" class="form-control" id="quantity" name="quantity"
-                                placeholder="Quantity">
-                        </div>
+                      
 
 
-                        <div class="col-md-6">
-                            <label for="image" class="form-label">Photo</label>
-                            <input type="file" class="form-control" id="image" name="image" placeholder="image" required accept="image/png, image/jpeg">
-                        </div>
+                       
 
                         <div class="col-md-6">
                             <label for="imagess" class="form-label">Photos Supplémentaires</label>
@@ -90,14 +75,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3">
-                            <label for="brand_id" class="form-label">Brands</label>
-                            <select class="form-select custome-form-select" id="brand_id" name="brand_id">
-                                    @foreach($brands as $brand)
-                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        
 
                         <div class="col-md-3">
                             <label for="categorie_product" class="form-label">categorie_product</label>

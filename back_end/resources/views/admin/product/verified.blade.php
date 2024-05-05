@@ -60,78 +60,78 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products as $product)                                                    
-                        <tr>
-                            <td>
-                                <a href="{{route('shop.product.details',['slug'=>$product->slug])}}">
-                                    <img src="{{ asset('storage/'. $product->image) }}"
-                                        class=" blur-up lazyload" alt="">
-                                </a>
-                            </td>
-                            <td>
-                                <a href="{{route('shop.product.details',['slug'=>$product->slug])}}" class="font-light">{{$product->name}}</a>
-                                <div class="mobile-cart-content row">
-                                    <div class="col">
-                                        <p>In Stock</p>
+                        @foreach ($products as $product)
+                            <tr>
+                                <td>
+                                    <a href="{{ route('shop.product.details', ['slug' => $product->slug]) }}">
+                                        @if ($product->images->isNotEmpty())
+                                            <img src="{{ asset('storage/' . $product->images->first()->image) }}" class="blur-up lazyload" alt="">
+                                        @else
+                                            <p>No image available</p>
+                                        @endif
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('shop.product.details', ['slug' => $product->slug]) }}" class="font-light">{{ $product->name }}</a>
+                                    <div class="mobile-cart-content row">
+                                        <div class="col">
+                                            <p>In Stock</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="fw-bold">${{ $product->regular_price }}</p>
+                                        </div>
+                                        <div class="col">
+                                            <h2 class="td-color">
+                                                <a href="javascript:void(0)" class="icon">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+                                            </h2>
+                                            <h2 class="td-color">
+                                                <a href="cart.php" class="icon">
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                </a>
+                                            </h2>
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <p class="fw-bold">${{$product->regular_price}}</p>
-                                    </div>
-                                    <div class="col">
-                                        <h2 class="td-color">
-                                            <a href="javascript:void(0)" class="icon">
-                                                <i class="fas fa-times"></i>
-                                            </a>
-                                        </h2>
-                                        <h2 class="td-color">
-                                            <a href="cart.php" class="icon">
-                                                <i class="fas fa-shopping-cart"></i>
-                                            </a>
-                                        </h2>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <p class="fw-bold">${{$product->regular_price}}</p>
-                            </td>
+                                </td>
+                                <td>
+                                    <p class="fw-bold">${{ $product->regular_price }}</p>
+                                </td>
 
-                            <td>
-                                <form action="{{ route('admin.product.verify', ['product' => $product->id]) }}" method="POST">
-                                    @csrf
-                                    <div class="form-group">
-                                        <select class="form-control" id="actionSelect" name="featured" style="padding: 10px 2px;" onchange="this.form.submit()">
-                                            <option value="">Select</option>
-                                            <option value="1" {{ $product->featured == '1' ? 'selected' : '' }}>Accepter</option>
-                                            <option value="0" {{ $product->featured == '0' ? 'selected' : '' }}>Rejeter</option>
-                                        </select>
-                                    </div>
-                                </form>
-                                
-                                  
-                            </td>
-                            <td>
-                                @if($product->stock_status == "instock")
-                                    <p>In Stock</p>
-                                @else
-                                    <p>Stock Out</p>
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('admin.editProduct', ['id' => $product->id]) }}" class="icon">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a href="javascript:void(0)" class="icon" onclick="confirm('Are you sure?') && document.getElementById('delete-form-{{ $product->id }}').submit();">
-                                    <i class="fas fa-times"></i>
-                                </a>
-                                <form id="delete-form-{{ $product->id }}" action="{{route('admin.deleteProduct', ['id' => $product->id])}}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                                
-                            </td>
-                            
-                        </tr> 
-                        @endforeach                          
+                                <td>
+                                    <form action="{{ route('admin.product.verify', ['product' => $product->id]) }}" method="POST">
+                                        @csrf
+                                        <div class="form-group">
+                                            <select class="form-control" id="actionSelect" name="featured" style="padding: 10px 2px;" onchange="this.form.submit()">
+                                                <option value="">Select</option>
+                                                <option value="1" {{ $product->featured == '1' ? 'selected' : '' }}>Accepter</option>
+                                                <option value="0" {{ $product->featured == '0' ? 'selected' : '' }}>Rejeter</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </td>
+                                <td>
+                                    @if ($product->stock_status == "instock")
+                                        <p>In Stock</p>
+                                    @else
+                                        <p>Stock Out</p>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.editProduct', ['id' => $product->id]) }}" class="icon">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="javascript:void(0)" class="icon" onclick="confirm('Are you sure?') && document.getElementById('delete-form-{{ $product->id }}').submit();">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                    <form id="delete-form-{{ $product->id }}" action="{{ route('admin.deleteProduct', ['id' => $product->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                        
                     </tbody>
                 </table>
             </div>

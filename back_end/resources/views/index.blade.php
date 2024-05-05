@@ -502,7 +502,7 @@
 
 
             <div class="our-product products-c">
-                @foreach ($highSalePriceProducts as $product)
+                @foreach ($latestElectronics as $product)
                 <div>
                     <div class="product-box">
                         <div class="img-wrapper">

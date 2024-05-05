@@ -53,7 +53,7 @@
                         <tr class="table-head">
                             <th scope="col">ID</th>
                             <th scope="col">name</th>
-                            <th scope="col">slug</th>
+                            <th scope="col">ParentCategory</th>
                             <th scope="col">Action</th>
                             
                         </tr>
@@ -66,7 +66,7 @@
                                 <a href="#" class="font-light">{{ $categories->name }}</a>
                                 <div class="mobile-cart-content row">
                                     <div class="col">
-                                        <p>{{ $categories->slug }}</p>
+                                        <p>{{ $categories->parentCategory }}</p>
                                     </div>
                                     <div class="col">
                                         <p class="fw-bold">{{ $categories->image }}</p>
@@ -86,7 +86,7 @@
                                 </div>
                             </td>
                             <td>
-                                <p class="fw-bold">{{ $categories->name }}</p>
+                                <p class="fw-bold">{{ $categories->parentCategory }}</p>
                             </td>
                             <td>
                                 <a href="{{ route('admin.editCategorie', ['id' => $categories->id]) }}" class="icon">

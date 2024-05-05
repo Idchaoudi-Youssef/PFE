@@ -48,19 +48,25 @@
                         <div class="col-md-6">
                             <label for="name" class="form-label">Name</label>
                             <input type="text" class="form-control" id="name" name="name"
-                                placeholder="Enter Full Name" value="{{$categorie->name}}">
+                                placeholder="Enter Full Name" value="{{ $categorie->name }}">
                         </div>
                         <div class="col-md-6">
-                            <label for="slug" class="form-label">Slug</label>
-                            <input type="text" class="form-control" id="slug" name="slug"
-                                placeholder="Enter Email" value="{{$categorie->slug}}">
+                            <label for="parentCategory" class="form-label">ParentCategory</label>
+                            <input type="text" class="form-control" id="parentCategory" name="parentCategory" 
+                                placeholder="Enter your parent category" value="{{ $categorie->parentCategory }}">
                         </div>
-                    
-                        
-                        
-                        <button class="btn btn-solid-default mt-4" type="submit" onclick="submitForm(event)">Update</button>
-                        
+
+                     <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="1" id="state" name="state">
+                            <label class="form-check-label" for="state">Active</label>
+                        </div>
                     </div>
+                        
+                        
+                        <button class="btn btn-solid-default mt-4" type="submit" onclick="submitForm(event)">Ajouter</button>
+                        
+                   
                 
                 </form>
                 <script>

@@ -40,191 +40,173 @@
 
 <section>
     <div class="container">
-        <div class="row gx-4 gy-5">
-            <div class="col-lg-12 col-12">
-                <div class="details-items">
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-lg-2">
-                                    <div class="details-image-vertical black-slide rounded">
+        <div class="row gx-4 gy-5"><div class="col-lg-12 col-12">
+            <div class="details-items">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="details-image-vertical black-slide rounded">
+                                    {{-- All Product Images --}}
+                                    @foreach ($productImages as $image)
                                         <div>
-                                            <img src=" {{ asset('storage/'.$product->image) }}" class="img-fluid blur-up lazyload" alt="{{$product->name}}">
+                                            <img src="{{ asset('storage/'.$image->image) }}" class="img-fluid blur-up lazyload" alt="{{ $product->name }}">
                                         </div>
-                                        @if($product->images) 
-                                        @php 
-                                            $images = explode(',',$product->images);
-                                        @endphp  
-                                        @foreach ($productImages /*$productImages*/ as $image)
-                                            <div>
-                                                <img src=" {{ asset('storage/'.$product->image) }}"
-                                                    class="img-fluid blur-up lazyload" alt="">
-                                            </div>
-                                        @endforeach 
-                                        @endif                                       
-                                    </div>
+                                    @endforeach
                                 </div>
-                                <div class="col-lg-10">
-                                    <div class="details-image-1 ratio_asos">
-                                        <div>
-                                            <img src=" {{ asset('storage/'.$product->image) }}" class="img-fluid w-100 image_zoom_cls-0 blur-up lazyload" alt="{{$product->name}}">
-                                        </div>
-
-                                                                                                                         
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="details-image-1 ratio_asos">
+                                    {{-- Main Image Zoom --}}
+                                    <div>
+                                        <img src="{{ asset('storage/'.$productImages->first()->image) }}" class="img-fluid w-100 image_zoom_cls-0 blur-up lazyload" alt="{{ $product->name }}">
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-6">
-                            <div class="cloth-details-size">
-                                <div class="product-count">
-                                    <ul>
-                                        <li>
-                                            <img src="../assets/images/gif/fire.gif"
-                                                class="img-fluid blur-up lazyload" alt="image">
-                                            <span class="p-counter">37</span>
-                                            <span class="lang">orders in last 24 hours</span>
+                    </div>
+        
+                    <div class="col-md-6">
+                        <div class="cloth-details-size">
+                            <div class="product-count">
+                                <ul>
+                                    <li>
+                                        <img src="../assets/images/gif/fire.gif" class="img-fluid blur-up lazyload" alt="image">
+                                        <span class="p-counter">37</span>
+                                        <span class="lang">orders in last 24 hours</span>
+                                    </li>
+                                    <li>
+                                        <img src="../assets/images/gif/person.gif" class="img-fluid user_img blur-up lazyload" alt="image">
+                                        <span class="p-counter">44</span>
+                                        <span class="lang">active view this</span>
+                                    </li>
+                                </ul>
+                            </div>
+        
+                            <div class="details-image-concept">
+                                <h2>{{ $product->name }}</h2>
+                            </div>
+        
+                            <div class="label-section">
+                                <span class="badge badge-grey-color">#1 Best seller</span>
+                                <span class="label-text">in fashion</span>
+                            </div>
+        
+                            <h3 class="price-detail">
+                                @if($product->sale_price)
+                                    ${{ $product->sale_price }}
+                                    <del>${{ $product->regular_price }}</del>
+                                    <span>
+                                        {{ round((($product->regular_price - $product->sale_price)/$product->regular_price)*100) }}% off
+                                    </span>
+                                @else
+                                    {{ $product->regular_price }}
+                                @endif
+                            </h3>
+        
+                            <div class="product-buttons">
+                                <a href="javascript:void(0)" class="btn btn-solid" id="triggerModal">
+                                    <i class="fa fa-bookmark fz-16 me-2"></i>
+                                    <span>Commande</span>
+                                </a>
+                                <script>
+                                    document.getElementById('triggerModal').addEventListener('click', function() {
+                                        var phoneNumber = "{{ $phoneNumber }}"; 
+                                        Swal.fire({
+                                            title: "<strong>Attention!!</strong>",
+                                            icon: "info",
+                                            html: `
+                                            Il ne faut jamais envoyer de l’argent à l’avance au vendeur par virement bancaire ou à travers une agence de transfert d’argent lors de l’achat des biens disponibles sur le site.<br><br>
+                                            <strong>Numéro de contact :</strong> ` + phoneNumber + `
+                                            `,
+                                            showCloseButton: true,
+                                            showCancelButton: true,
+                                            focusConfirm: false,
+                                            confirmButtonText: '<i class="fa fa-thumbs-up"></i> D\'accord!',
+                                            confirmButtonAriaLabel: "D'accord",
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonText: '<i class="fa fa-thumbs-down"></i>',
+                                            cancelButtonAriaLabel: "Thumbs down",
+                                        });
+                                    });
+                                </script>
+                            </div>
+        
+                            <ul class="product-count shipping-order">
+                                <li>
+                                    <img src="../assets/images/gif/truck.png" class="img-fluid blur-up lazyload" alt="image">
+                                    <span class="lang">Free shipping for orders above $75 USD</span>
+                                </li>
+                            </ul>
+        
+                            <div class="mt-2 mt-md-3 border-product">
+                                <h6 class="product-title hurry-title d-block">
+                                    @if($product->stock_status=='instock')
+                                        InStock
+                                    @else
+                                        Out Of Stock
+                                    @endif
+                                </h6>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 78%"></div>
+                                </div>
+                                <div class="font-light timer-5">
+                                    <h5>Order in the next to get</h5>
+                                    <ul class="timer1">
+                                        <li class="counter">
+                                            <h5 id="days">␣</h5> Days :
                                         </li>
-                                        <li>
-                                            <img src="../assets/images/gif/person.gif"
-                                                class="img-fluid user_img blur-up lazyload" alt="image">
-                                            <span class="p-counter">44</span>
-                                            <span class="lang">active view this</span>
+                                        <li class="counter">
+                                            <h5 id="hours">␣</h5> Hour :
+                                        </li>
+                                        <li class="counter">
+                                            <h5 id="minutes">␣</h5> Min :
+                                        </li>
+                                        <li class="counter">
+                                            <h5 id="seconds">␣</h5> Sec
                                         </li>
                                     </ul>
                                 </div>
-
-                                <div class="details-image-concept">
-                                    <h2>{{$product->name}}</h2>
-                                </div>
-
-                                <div class="label-section">
-                                    <span class="badge badge-grey-color">#1 Best seller</span>
-                                    <span class="label-text">in fashion</span>
-                                </div>
-
-                                <h3 class="price-detail">
-                                    @if($product->sale_price)
-                                        ${{$product->sale_price}}
-                                    <del>${{$product->regular_price}}</del><span>
-                                        {{ round((($product->regular_price - $product->sale_price)/$product->regular_price)*100) }}
-                                        % off</span>
-                                    @else
-                                        {{$product->regular_price}}
-                                    @endif
-                                
-                                </h3>
-
-                                
-                                {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
-
-                                <!-- Votre bouton Commande -->
-                                <div class="product-buttons">
-                                    <a href="javascript:void(0)" class="btn btn-solid" id="triggerModal">
-                                        <i class="fa fa-bookmark fz-16 me-2"></i>
-                                        <span>Commande</span>
-                                    </a>
-                                    <script>
-                                        document.getElementById('triggerModal').addEventListener('click', function() {
-                                            var phoneNumber = "{{ $phoneNumber }}"; // Intègre la variable PHP directement
-                                            Swal.fire({
-                                                title: "<strong>Attention!!</strong>",
-                                                icon: "info",
-                                                html: `
-                                                Il ne faut jamais envoyer de l’argent à l’avance au vendeur par virement bancaire ou à travers une agence de transfert d’argent lors de l’achat des biens disponibles sur le site.<br><br>
-                                                <strong>Numéro de contact :</strong> ` + phoneNumber + `
-                                                `,
-                                                showCloseButton: true,
-                                                showCancelButton: true,
-                                                focusConfirm: false,
-                                                confirmButtonText: '<i class="fa fa-thumbs-up"></i> D\'accord!',
-                                                confirmButtonAriaLabel: "D'accord",
-                                                confirmButtonColor: '#3085d6',
-                                                cancelButtonText: '<i class="fa fa-thumbs-down"></i>',
-                                                cancelButtonAriaLabel: "Thumbs down",
-                                            });
-                                        });
-                                        </script>
-                                        
-                                        
-                                </div>
-
-                                <ul class="product-count shipping-order">
-                                    <li>
-                                        <img src="../assets/images/gif/truck.png" class="img-fluid blur-up lazyload"
-                                            alt="image">
-                                        <span class="lang">Free shipping for orders above $75 USD</span>
-                                    </li>
-                                </ul>
-
-                                <div class="mt-2 mt-md-3 border-product">
-                                    <h6 class="product-title hurry-title d-block">
-                                        @if($product->stock_status=='instock')
-                                            InStock
-                                        @else
-                                            Out Of Stock
-                                        @endif
-                                    </h6>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 78%"></div>
-                                    </div>
-                                    <div class="font-light timer-5">
-                                        <h5>Order in the next to get</h5>
-                                        <ul class="timer1">
-                                            <li class="counter">
-                                                <h5 id="days">␣</h5> Days :
-                                            </li>
-                                            <li class="counter">
-                                                <h5 id="hours">␣</h5> Hour :
-                                            </li>
-                                            <li class="counter">
-                                                <h5 id="minutes">␣</h5> Min :
-                                            </li>
-                                            <li class="counter">
-                                                <h5 id="seconds">␣</h5> Sec
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="border-product">
-                                    <h6 class="product-title d-block">share it</h6>
-                                    <div class="product-icon">
-                                        <ul class="product-social">
-                                            <li>
-                                                <a href="https://www.facebook.com/">
-                                                    <i class="fab fa-facebook-f"></i>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="https://www.google.com/">
-                                                    <i class="fab fa-google-plus-g"></i>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="https://twitter.com/">
-                                                    <i class="fab fa-twitter"></i>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="https://www.instagram.com/">
-                                                    <i class="fab fa-instagram"></i>
-                                                </a>
-                                            </li>
-                                            <li class="pe-0">
-                                                <a href="https://www.google.com/">
-                                                    <i class="fas fa-rss"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                            </div>
+        
+                            <div class="border-product">
+                                <h6 class="product-title d-block">share it</h6>
+                                <div class="product-icon">
+                                    <ul class="product-social">
+                                        <li>
+                                            <a href="https://www.facebook.com/">
+                                                <i class="fab fa-facebook-f"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/">
+                                                <i class="fab fa-google-plus-g"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://twitter.com/">
+                                                <i class="fab fa-twitter"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.instagram.com/">
+                                                <i class="fab fa-instagram"></i>
+                                            </a>
+                                        </li>
+                                        <li class="pe-0">
+                                            <a href="https://www.google.com/">
+                                                <i class="fas fa-rss"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        
 
             <div class="col-12">
                 <div class="cloth-review">
@@ -262,50 +244,12 @@
                                     on a white color.</p>
                                 <div class="table-responsive">
                                     <table class="table table-part">
-                                        <tr>
-                                            <th>Product Dimensions</th>
-                                            <td>15 x 15 x 3 cm; 250 Grams</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Date First Available</th>
-                                            <td>5 April 2021</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Manufacturer</th>
-                                            <td>Aditya Birla Fashion and Retail Limited</td>
-                                        </tr>
-                                        <tr>
-                                            <th>ASIN</th>
-                                            <td>B06Y28LCDN</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Item model number</th>
-                                            <td>AMKP317G04244</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Department</th>
-                                            <td>Men</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Item Weight</th>
-                                            <td>250 G</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Item Dimensions LxWxH</th>
-                                            <td>15 x 15 x 3 Centimeters</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Net Quantity</th>
-                                            <td>1 U</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Included Components</th>
-                                            <td>1-T-shirt</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Generic Name</th>
-                                            <td>T-shirt</td>
-                                        </tr>
+                                        @foreach($specification_products as $specification)
+                                            <tr>
+                                                <th>{{ $specification->attribute }}</th>
+                                                <td>{{ $specification->value }}</td>
+                                            </tr>
+                                        @endforeach
                                     </table>
                                 </div>
                             </div>

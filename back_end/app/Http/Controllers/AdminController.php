@@ -56,11 +56,12 @@ class AdminController extends Controller
         default:
                 $o_column = "id";
                 $o_order = "DESC";
-
         }   
         
-        $brands = Brand::orderBy('name','ASC')->get();    
-        $q_brands = $request->query("brands");
+        // Suppression de la récupération des marques
+        // $brands = Brand::orderBy('name','ASC')->get();    
+        // $q_brands = $request->query("brands");
+        
         $categories = Category::orderBy("name","ASC")->get();
         $q_categories = $request->query("categories");  
         $prange = $request->query("prange");
@@ -68,21 +69,20 @@ class AdminController extends Controller
             $prange = "0,500";
         $from  = explode(",",$prange)[0];
         $to  = explode(",",$prange)[1];
-        $products = Product::where(function($query) use($q_brands){
-                                $query->whereIn('brand_id',explode(',',$q_brands))->orWhereRaw("'".$q_brands."'=''");
-                            })
-                            ->where(function($query) use($q_categories){
+        $products = Product::where(function($query) use($q_categories){
                                 $query->whereIn('category_id',explode(',',$q_categories))->orWhereRaw("'".$q_categories."'=''");
                             })
                             ->whereBetween('regular_price',array($from,$to))
                     ->orderBy('created_at','DESC')->orderBy($o_column,$o_order)->paginate($size);
-        return view('admin.product.listproduct',['products'=>$products,'page'=>$page,'size'=>$size,'order'=>$order,'brands'=>$brands,'q_brands'=>$q_brands,'categories'=>$categories,'q_categories'=>$q_categories,'from'=>$from,'to'=>$to]); 
+                    
+        return view('admin.product.listproduct',['products'=>$products,'page'=>$page,'size'=>$size,'order'=>$order,'categories'=>$categories,'q_categories'=>$q_categories,'from'=>$from,'to'=>$to ]); 
     }
+    
 
-    public function getAllBrand(){
-        $brands = Brand::all();
-        return view('admin.brand.listbrand', compact('brands'));
-    }
+    // public function getAllBrand(){
+    //     $brands = Brand::all();
+    //     return view('admin.brand.listbrand', compact('brands'));
+    // }
 
     public function getAllCategorie(){
         $categorie = Category::all();
@@ -94,10 +94,10 @@ class AdminController extends Controller
         return view('admin.user.create-users');
     }
     
-    public function createBrands(){
+    // public function createBrands(){
         
-        return view('admin.brand.create-brands');
-    }
+    //     return view('admin.brand.create-brands');
+    // }
     public function createCategories(){
         
         return view('admin.categorie.create-categories');
@@ -105,8 +105,8 @@ class AdminController extends Controller
 
     public function createProducts(){
         $categories = Category::all();
-        $brands = Brand::all();
-        return view('admin.product.create-products', compact('categories', 'brands'));
+        // $brands = Brand::all();
+        return view('admin.product.create-products', compact('categories'));
     }
 
 
@@ -145,24 +145,24 @@ class AdminController extends Controller
         return redirect()->route('admin.users')->with('success', 'User created successfully');
     }
     
-    public function storeBrands(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255', 
-            'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
-        ]);
+    // public function storeBrands(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'slug' => 'required|string|max:255', 
+    //         'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+    //     ]);
 
-        $this->uploadImage($request, $validatedData);
+    //     $this->uploadImage($request, $validatedData);
 
-        $brand = Brand::create([
-            'name' => $validatedData['name'],
-            'slug' => $validatedData['slug'],
-            'image' => $validatedData['image'],
-        ]);
+    //     $brand = Brand::create([
+    //         'name' => $validatedData['name'],
+    //         'slug' => $validatedData['slug'],
+    //         'image' => $validatedData['image'],
+    //     ]);
 
-        return redirect()->route('admin.brands')->with('success', 'Brand created successfully');
-    }
+    //     return redirect()->route('admin.brands')->with('success', 'Brand created successfully');
+    // }
 
     private function uploadImage(Request $request, array &$formFields) {
             if($request->hasFile('image')){
@@ -172,22 +172,22 @@ class AdminController extends Controller
 
 
     public function storeCategories(Request $request)
-    {
-        // Valider les données entrantes
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255',
-        ]);
+{
+    // Valider les données entrantes
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'parentCategory' => 'nullable|string|max:255', // Ajout de la validation pour parentCategory
+        'state' => 'boolean', // Ajout de la validation pour state
+    ]);
 
-        // Créer l'utilisateur avec les données validées
-        $categorie = Category::create([
-            'name' => $validatedData['name'],
-            'slug' => $validatedData['slug'],
-        ]);
+    $categorie = Category::create([
+        'name' => $validatedData['name'],
+        'parentCategory' => $validatedData['parentCategory'], // Ajout de parentCategory
+        'state' => $request->has('state'), // Ajout de state
+    ]);
 
-        // Rediriger vers la route souhaitée avec un message de succès
-        return redirect()->route('admin.categories')->with('success', 'Categorie created successfully');
-    }
+    return redirect()->route('admin.categories')->with('success', 'Categorie created successfully');
+}
     
     public function storeProducts(Request $request)
     {
@@ -198,25 +198,19 @@ class AdminController extends Controller
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
             'regular_price' => 'required|numeric',
-            'sale_price' => 'nullable|numeric',
-            'SKU' => 'required|string|max:255',
             'stock_status' => 'required|string',
             'featured' => 'nullable|boolean',
-            'quantity' => 'required|numeric|min:1',
-            'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
-            'imagess.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048', // Champ pour les images multiples
             'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'required|exists:brands,id',
             'categorie_product' => 'nullable|string',
             'user_id' => 'required|exists:users,id',
         ]);
     
         // Traiter l'image principale
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('assets/images/fashion/product/front', 'public');
-            $validatedData['image'] = $imagePath;
-            $validatedData['images'] = $imagePath;
-        }
+        // if ($request->hasFile('image')) {
+        //     $imagePath = $request->file('image')->store('assets/images/fashion/product/front', 'public');
+        //     $validatedData['image'] = $imagePath;
+        //     $validatedData['images'] = $imagePath;
+        // }
     
         // Créer le produit
         $validatedData['user_id'] = Auth::id();
@@ -228,18 +222,21 @@ class AdminController extends Controller
             foreach ($files as $key => $file) {
                 $extension = $file->getClientOriginalExtension();
                 $filename = $key . '_' . time() . '.' . $extension;
-                $path = "assets/images/fashion/product/back/";
-                $file->move($path, $filename);
+                
+                // Déplacer le fichier vers le stockage Laravel
+                $path = $file->store('assets/images/fashion/product/front', 'public');
+                
+                // Enregistrement de l'image dans la base de données
                 $imageData[] = [
                     'product_id' => $product->id,
-                    'image' => $path . $filename,
+                    'image' => $path, // Le chemin du fichier dans le stockage Laravel
                 ];
             }
-    
+        
             // Assurez-vous que le modèle ProductImage existe et peut recevoir les images multiples
             ProductImage::insert($imageData);
         }
-    
+        // dd($product,$imageData);
         // Redirection avec succès
         return redirect()->route('admin.Verifiedproducts')->with('success', 'Product created successfully.');
     }
@@ -296,19 +293,19 @@ class AdminController extends Controller
     }
 }
 
-    public function deleteBrands($id)
-    {
-        $brand = Brand::find($id);
-        if ($brand) {
-            // L'utilisateur existe, on peut le supprimer
-            $brand->delete();
-            $brands = Brand::all();
-            return redirect()->route('admin.brands')->with('success', 'Brand deleted successfully.');
-        } else {
-            $brands = Brand::all();
-            return redirect()->route('admin.brands')->with('error', 'Brand not found.');
-        }
-    }
+    // public function deleteBrands($id)
+    // {
+    //     $brand = Brand::find($id);
+    //     if ($brand) {
+    //         // L'utilisateur existe, on peut le supprimer
+    //         $brand->delete();
+    //         $brands = Brand::all();
+    //         return redirect()->route('admin.brands')->with('success', 'Brand deleted successfully.');
+    //     } else {
+    //         $brands = Brand::all();
+    //         return redirect()->route('admin.brands')->with('error', 'Brand not found.');
+    //     }
+    // }
 
     public function deleteProducts($id)
     {
@@ -320,7 +317,7 @@ class AdminController extends Controller
             return redirect()->route('admin.categories')->with('error', 'Product deleted successfully.');
         } else {
             $products = Product::all();
-            return redirect()->route('admin.categories')->with('error', 'Brand not found.');
+            return redirect()->route('admin.categories')->with('error', 'Product not found.');
         }
     }
 
@@ -368,49 +365,53 @@ class AdminController extends Controller
     //     return view('admin.user.update-users', compact('user'));
     // }
 
-    public function editBrands($id){
-        $brand = Brand::find($id);
-        return view('admin.brand.update-brand', compact('brand'));
-    }
+    // public function editBrands($id){
+    //     $brand = Brand::find($id);
+    //     return view('admin.brand.update-brand', compact('brand'));
+    // }
 
 
 
-    public function updateBrand(Request $request, $id)
-    {
-        $brand = Brand::findOrFail($id); // Trouve la marque par son ID ou retourne une erreur 404
+    // public function updateBrand(Request $request, $id)
+    // {
+    //     $brand = Brand::findOrFail($id); // Trouve la marque par son ID ou retourne une erreur 404
 
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255', 
-            'image' => 'nullable|image|mimes:jpeg,jpg|max:2048',
-        ]);
+    //     $validatedData = $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'slug' => 'required|string|max:255', 
+    //         'image' => 'nullable|image|mimes:jpeg,jpg|max:2048',
+    //     ]);
 
-        if ($request->hasFile('image')) {
-            $this->uploadImage($request, $validatedData); // Assurez-vous que cette méthode met à jour le chemin de l'image dans $validatedData
-        }
+    //     if ($request->hasFile('image')) {
+    //         $this->uploadImage($request, $validatedData); // Assurez-vous que cette méthode met à jour le chemin de l'image dans $validatedData
+    //     }
 
-        $brand->update([
-            'name' => $validatedData['name'],
-            'slug' => $validatedData['slug'],
-            'image' => $validatedData['image'] ?? $brand->image, // Garde l'image existante si aucune nouvelle image n'est fournie
-        ]);
+    //     $brand->update([
+    //         'name' => $validatedData['name'],
+    //         'slug' => $validatedData['slug'],
+    //         'image' => $validatedData['image'] ?? $brand->image, // Garde l'image existante si aucune nouvelle image n'est fournie
+    //     ]);
 
-        return redirect()->route('admin.brands')->with('success', 'Brand updated successfully');
-    }
+    //     return redirect()->route('admin.brands')->with('success', 'Brand updated successfully');
+    // }
+    
 
+ 
     public function updateCategories(Request $request, $id)
     {
         $categorie = Category::findOrFail($id); // Trouve la marque par son ID ou retourne une erreur 404
 
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255',
+            'parentCategory' => 'nullable|string|max:255', // Ajout de la validation pour parentCategory
+            'state' => 'boolean', // Ajout de la validation pour state
         ]);
 
         // Créer l'utilisateur avec les données validées
         $categorie->update([
             'name' => $validatedData['name'],
-            'slug' => $validatedData['slug'],
+            'parentCategory' => $validatedData['parentCategory'], // Ajout de parentCategory
+            'state' => $request->has('state'), // Ajout de state
         ]);
 
         // Rediriger vers la route souhaitée avec un message de succès
@@ -419,10 +420,12 @@ class AdminController extends Controller
 
     public function editProducts($id){
         $product = Product::find($id);
-        $categories = Category::all();
-        $brands = Brand::all();
-        return view('admin.product.update-product', compact('product' , 'categories' , 'brands'));
+        // $categories = Category::all();
+        // $brands = Brand::all();
+        return view('admin.product.update-product', compact('product' , 'categories'));
     }
+
+    
 
     public function UpdateProduct(Request $request, $id){
         $product = Product::find($id);
@@ -433,23 +436,12 @@ class AdminController extends Controller
             'short_description' => 'string',
             'description' => 'string',
             'regular_price' => 'numeric',
-            'sale_price' => 'numeric',
-            'SKU' => 'string|max:255',
             'stock_status' => 'string',
             'featured' => 'boolean',
-            'quantity' => 'numeric|min:1',
-            'image' => 'image|mimes:jpeg,jpg,png|max:2048',
             'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'required|exists:brands,id',
             'categorie_product' => 'nullable|string',
-            'imagess.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048', 
 
         ]);
-
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('assets/images/fashion/product/front', 'public');
-            $validatedData['image'] = $imagePath;
-        }
 
         $product->update($validatedData);
 
@@ -481,8 +473,16 @@ class AdminController extends Controller
     }
 
     public function VerifiedproductsView(){
-        $products = Product::all();
-        return view('admin.product.verified', compact('products'));
+        $products = Product::with('images')->get();
+        // $images = [];
+    
+        // foreach ($products as $product) {
+        //     $image = ProductImage::where('product_id', $product->id)->first();
+        //     $images[$product->id] = $image; // Stocker l'image associée au produit dans un tableau indexé par l'ID du produit
+        // }
+    
+        // dd($images, $products);
+        return view('admin.product.verified', compact('products'/* , 'images'*/));
     }
 
     public function verifyProduct(Request $request, Product $product)

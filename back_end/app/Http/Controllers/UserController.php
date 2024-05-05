@@ -7,7 +7,9 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use App\Mail\WelcomeMail;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use App\Models\ProductSpecification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -20,105 +22,135 @@ class UserController extends Controller
 
     
 
-    public function getAllProductsByUserId(Request $request,$id){
+    public function getAllProductsByUserId(Request $request, $id){
         $page = $request->query("page");
         $size = $request->query("size");
         if(!$page)
-                $page = 1;
+            $page = 1;
         if(!$size)
-                $size = 12;
+            $size = 12;
         $order = $request->query("order");
         if(!$order)
-        $order = -1;
+            $order = -1;
         $o_column = "";
         $o_order = "";
-        switch($order)
-        {
-        case 1:
+        switch($order) {
+            case 1:
                 $o_column = "created_at";
                 $o_order = "DESC";
                 break;
-        case 2:
+            case 2:
                 $o_column = "created_at";
                 $o_order = "ASC";
                 break;
-        case 3:
+            case 3:
                 $o_column = "regular_price";
                 $o_order = "ASC";
                 break;  
-        case 4:
+            case 4:
                 $o_column = "regular_price";
                 $o_order = "DESC";
                 break;
-        default:
+            default:
                 $o_column = "id";
                 $o_order = "DESC";
-
         }   
-        
-        $brands = Brand::orderBy('name','ASC')->get();    
-        $q_brands = $request->query("brands");
-        $categories = Category::orderBy("name","ASC")->get();
+    
+        $categories = Category::orderBy("name", "ASC")->get();
         $q_categories = $request->query("categories");  
         $prange = $request->query("prange");
         if(!$prange)
             $prange = "0,500";
         $from  = explode(",",$prange)[0];
         $to  = explode(",",$prange)[1];
-        $products = Product::where(function($query) use($q_brands){
-                    $query->whereIn('brand_id', explode(',', $q_brands))
-                        ->orWhereRaw("'".$q_brands."'=''");
-                    })
-                    ->where(function($query) use($q_categories){
-                        $query->whereIn('category_id', explode(',', $q_categories))
-                            ->orWhereRaw("'".$q_categories."'=''");
-                    })
-                        ->whereBetween('regular_price', array($from, $to))
-                        ->where('user_id', $id) 
-                        ->orderBy('created_at', 'DESC')
-                        ->orderBy($o_column, $o_order)
-                        ->paginate($size);
-            return view('users.product.listproduct',['products'=>$products,'page'=>$page,'size'=>$size,'order'=>$order,'brands'=>$brands,'q_brands'=>$q_brands,'categories'=>$categories,'q_categories'=>$q_categories,'from'=>$from,'to'=>$to]); 
+        $products = Product::where(function($query) use($q_categories) {
+                $query->whereIn('category_id', explode(',', $q_categories))
+                    ->orWhereRaw("'".$q_categories."'=''");
+            })
+            ->whereBetween('regular_price', array($from, $to))
+            ->where('user_id', $id) 
+            ->orderBy('created_at', 'DESC')
+            ->orderBy($o_column, $o_order)
+            ->paginate($size);
+            
+        return view('users.product.listproduct', [
+            'products' => $products,
+            'page' => $page,
+            'size' => $size,
+            'order' => $order,
+            'categories' => $categories,
+            'q_categories' => $q_categories,
+            'from' => $from,
+            'to' => $to
+        ]); 
     }
 
 
     public function createProducts(){
             $categories = Category::all();
-            $brands = Brand::all();
-            return view('users.product.create-products', compact('categories', 'brands'));
+           
+            return view('users.product.create-products', compact('categories'));
     }
 
+    public function testcreateProducts(){
+        $categories = Category::all();
+       
+        return view('test', compact('categories'));
+}
+
+   
     public function storeProducts(Request $request)
     {
 
-        $data = $request->input();
         $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
-        'slug' => 'required|string|max:255|unique:products,slug',
-        'short_description' => 'nullable|string',
-        'description' => 'nullable|string',
-        'regular_price' => 'required|numeric',
-        'sale_price' => 'nullable|numeric',
-        'SKU' => 'required|string|max:255',
-        'stock_status' => 'required|string',
-        'featured' => 'nullable|boolean',
-        'quantity' => 'required|numeric|min:1',
-        'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
-        'category_id' => 'required|exists:categories,id',
-        'brand_id' => 'required|exists:brands,id',
-        'categorie_product' => 'nullable|string',
-        'user_id' => 'required|exists:users,id',
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:products,slug',
+            'short_description' => 'nullable|string',
+            'description' => 'nullable|string',
+            'regular_price' => 'required|numeric',
+            'stock_status' => 'required|string',
+            'featured' => 'nullable|boolean',
+            'category_id' => 'required|exists:categories,id',
+            'categorie_product' => 'nullable|string',
+            'user_id' => 'required|exists:users,id',
+            'split_input' => 'required|array',
+            'split_input.*.attribute' => 'required|string|max:255',
+            'split_input.*.value' => 'required|string|max:255'
+        ]);
 
-    ]);
+        $validatedData['user_id'] = Auth::id();
+        $product = Product::create($validatedData);
 
-    if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('assets/images/fashion/product/front','public');
-        $validatedData['image'] = $imagePath;
-        $validatedData['images'] = $imagePath;
-    }
-    $validatedData['user_id'] = Auth::id();
+        if ($files = $request->file('imagess')) {
+            $imageData = [];
+            foreach ($files as $key => $file) {
+                $extension = $file->getClientOriginalExtension();
+                $filename = $key . '_' . time() . '.' . $extension;
+                
+                $path = $file->store('assets/images/fashion/product/front', 'public');
+                
+                $imageData[] = [
+                    'product_id' => $product->id,
+                    'image' => $path, // Le chemin du fichier dans le stockage Laravel
+                ];
+            }
+        
+            ProductImage::insert($imageData);
+        }
 
-    $product = Product::create($validatedData);
+        $specifications = [];
+        foreach ($request->input('split_input') as $specification) {
+            $specifications[] = [
+                'product_id' => $product->id,
+                'attribute' => $specification['attribute'],
+                'value' => $specification['value'],
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+        }
+
+        // Insert specifications into the database
+        ProductSpecification::insert($specifications);
 
     return redirect()->route('user.listproducts',['id' => Auth::id()])->with('success', 'Product created successfully.');
 

@@ -52,23 +52,9 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="sale_price" class="form-label">Sale Price</label>
-                            <input type="number" class="form-control @error('sale_price') is-invalid @enderror" id="sale_price" name="sale_price"
-                                placeholder="Locality" value="{{(old('sale_price', $product->sale_price))}}">
-                            @error('sale_price')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            </div>
+                        
 
-                        <div class="col-md-6">
-                            <label for="SKU" class="form-label">SKU</label>
-                            <input type="text" class="form-control @error('description') is-invalid @enderror" id="SKU" name="SKU"
-                                placeholder="Locality" value="{{(old('SKU', $product->SKU))}}">
-                            @error('SKU')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            </div>
+                        
 
                         <div class="col-md-3">
                             <label for="stock_status" class="form-label">Stock Status</label>
@@ -91,19 +77,12 @@
                             @enderror
                             </div> --}}
 
-                        <div class="col-md-6">
-                            <label for="quantity" class="form-label">Quantity</label>
-                            <input type="number" class="form-control @error('description') is-invalid @enderror" id="quantity" name="quantity"
-                                placeholder="Locality" value="{{old('quantity', $product->quantity)}}">
-                            @error('quantity')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            </div>
+                        
 
 
                         <div class="col-md-6">
-                            <label for="image" class="form-label">Photo</label>
-                            <input type="file" class="form-control @error('description') is-invalid @enderror" id="image" name="image" placeholder="image"  accept="image/png, image/jpeg">
+                            <label for="imagess" class="form-label">Photo</label>
+                            <input type="file" class="form-control @error('description') is-invalid @enderror" id="imagess" name="imagess[]" placeholder="imagess"  multiple accept="image/png, image/jpeg, image/webp">
                             @error('image')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -118,14 +97,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3">
-                            <label for="brand_id" class="form-label">Brands</label>
-                            <select class="form-select custome-form-select" id="brand_id" name="brand_id">
-                                    @foreach($brands as $brand)
-                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                       
 
                         <div class="col-md-3">
                             <label for="categorie_product" class="form-label">categorie_product</label>
