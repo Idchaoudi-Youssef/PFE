@@ -1,144 +1,123 @@
 @extends('layouts.base')
-@section('content')
 
+@section('content')
 <section class="section-b-space">
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-8">
-                <form class="needs-validation" method="POST" id="contactForm" action="{{route('admin.UpdateProduct' , $product->id)}}" enctype="multipart/form-data">
+                <form class="needs-validation" method="POST" action="{{ route('admin.UpdateProduct', $product->id) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+
                     <div id="billingAddress" class="row g-4">
-                        <h3 class="mb-3 theme-color">Billing address</h3>
+                        <h3 class="mb-3 theme-color">Edit Product</h3>
 
                         <div class="col-md-6">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Enter Full Name" value="{{ old('name', $product->name) }}">
-                            @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <label for="slug" class="form-label">Slug</label>
-                            <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slug" name="slug" placeholder="Enter Phone Number" value="{{ old('slug', $product->slug) }}">
-                            @error('slug')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="text" class="form-control" id="name" name="name" value="{{ $product->name }}"
+                                placeholder="Enter Product Name">
                         </div>
 
+                        <div class="col-md-6">
+                            <label for="slug" class="form-label">Slug</label>
+                            <input type="text" class="form-control" id="slug" name="slug" value="{{ $product->slug }}"
+                                placeholder="Enter Slug">
+                        </div>
 
                         <div class="col-md-6">
                             <label for="short_description" class="form-label">Short Description</label>
-                            <input type="text" class="form-control @error('short_description') is-invalid @enderror" id="short_description" name="short_description" placeholder="Locality" value="{{ old('short_description', $product->short_description) }}">
-                            @error('short_description')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="text" class="form-control" id="short_description" name="short_description" value="{{ $product->short_description }}"
+                                placeholder="Short Description">
                         </div>
 
                         <div class="col-md-12">
                             <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description">{{ old('description', $product->description) }}</textarea>
-                            @error('description')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <textarea class="form-control" id="description" name="description">{{ $product->description }}</textarea>
                         </div>
 
                         <div class="col-md-6">
                             <label for="regular_price" class="form-label">Regular Price</label>
-                            <input type="number" class="form-control  @error('regular_price') is-invalid @enderror" id="regular_price" name="regular_price" placeholder="Locality" value="{{(old('regular_price', $product->regular_price))}}">
-                            @error('regular_price')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="number" class="form-control" id="regular_price" name="regular_price" value="{{ $product->regular_price }}"
+                                placeholder="Regular Price">
                         </div>
-
-                        
-
-                        
 
                         <div class="col-md-3">
                             <label for="stock_status" class="form-label">Stock Status</label>
-                            <select class="form-select custome-form-select @error('stock_status') is-invalid @enderror" id="stock_status" name="stock_status">
-                                <option selected="" disabled=""  value="{{old('stock_status', $product->stock_status)}}"></option>
-                                <option value="instock">In Stock</option>
-                                <option value="outofstock">Out of Stock</option>
+                            <select class="form-select custome-form-select" id="stock_status" name="stock_status">
+                                <option value="instock" {{ $product->stock_status == 'instock' ? 'selected' : '' }}>In Stock</option>
+                                <option value="outofstock" {{ $product->stock_status == 'outofstock' ? 'selected' : '' }}>Out of Stock</option>
                             </select>
-                            @error('stock_status')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
-{{-- 
-                        <div class="col-md-6">
-                            <label for="featured" class="form-label">Featured</label>
-                            <input type="number" class="form-control @error('description') is-invalid @enderror" id="featured" name="featured"
-                                placeholder="Locality" value="{{old('featured', $product->featured)}}">
-                            @error('featured')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            </div> --}}
 
-                        
-
+                        <div class="col-md-6" style="display:none">
+                            <input type="number" class="form-control" id="featured" name="featured" value="{{ $product->featured }}">
+                        </div>
 
                         <div class="col-md-6">
                             <label for="imagess" class="form-label">Photo</label>
-                            <input type="file" class="form-control @error('description') is-invalid @enderror" id="imagess" name="imagess[]" placeholder="imagess"  multiple accept="image/png, image/jpeg, image/webp">
-                            @error('image')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="file" class="form-control" id="imagess" name="imagess[]" multiple accept="image/png, image/jpeg, image/webp">
                         </div>
 
                         <div class="col-md-3">
                             <label for="category_id" class="form-label">Categories</label>
                             <select class="form-select custome-form-select" id="category_id" name="category_id">
                                 @foreach($categories as $categorie)
-                                    <option value="{{ $categorie->id }}">{{ $categorie->name }}</option>
+                                    <option value="{{ $categorie->id }}" {{ $product->category_id == $categorie->id ? 'selected' : '' }}>{{ $categorie->name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                       
-
                         <div class="col-md-3">
-                            <label for="categorie_product" class="form-label">categorie_product</label>
+                            <label for="categorie_product" class="form-label">Product Category</label>
                             <select class="form-select custome-form-select" id="categorie_product" name="categorie_product">
-                                <option value="VET">Vetement</option>
-                                <option value="INF">Materiel Informatique</option>
+                                <option value="VET" {{ $product->categorie_product == 'VET' ? 'selected' : '' }}>Vetement</option>
+                                <option value="INF" {{ $product->categorie_product == 'INF' ? 'selected' : '' }}>Materiel Informatique</option>
                             </select>
                         </div>
 
-                       
-
-                        
-
-                    
-                    <button class="btn btn-solid-default mt-4" type="submit" onclick="submitForm(event)">Upgrade</button>
+                        <h4 class="mb-3 mt-4">Specifications</h4>
+                        <div id="input-group-container">
+                            @foreach($product->specifications as $index => $specification)
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" name="split_input[{{ $index }}][attribute]" value="{{ $specification->attribute }}" placeholder="Attribute">
+                                    <input type="text" class="form-control" name="split_input[{{ $index }}][value]" value="{{ $specification->value }}" placeholder="Value">
+                                </div>
+                            @endforeach
+                        </div>
+                        <button type="button" class="btn btn-primary mt-3" onclick="addInputGroup()">Add More</button>
+                    </div>
+                    <button class="btn btn-solid-default mt-4" type="submit">Update Product</button>
                 </form>
-
-                <script>
-                    function submitForm(event) {
-                        event.preventDefault(); 
-                        Swal.fire({
-                            title: 'Are you sure?',
-                            text: "You won't be able to revert this!",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes, send it!'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                document.getElementById('contactForm').submit(); 
-                            }
-                        });
-                    }
-                </script>
             </div>
-
-            
         </div>
     </div>
 </section>
-</section>
-@endsection
 
+<script>
+function addInputGroup() {
+    const container = document.getElementById('input-group-container');
+    const index = container.children.length;
+
+    const inputGroupDiv = document.createElement('div');
+    inputGroupDiv.className = 'input-group mb-3';
+
+    const attributeInput = document.createElement('input');
+    attributeInput.type = 'text';
+    attributeInput.className = 'form-control';
+    attributeInput.name = `split_input[${index}][attribute]`;
+    attributeInput.placeholder = 'Attribute';
+
+    const valueInput = document.createElement('input');
+    valueInput.type = 'text';
+    valueInput.className = 'form-control';
+    valueInput.name = `split_input[${index}][value]`;
+    valueInput.placeholder = 'Value';
+
+    inputGroupDiv.appendChild(attributeInput);
+    inputGroupDiv.appendChild(valueInput);
+
+    container.appendChild(inputGroupDiv);
+}
+</script>
+@endsection

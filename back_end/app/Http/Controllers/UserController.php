@@ -22,58 +22,43 @@ class UserController extends Controller
 
     
 
-    public function getAllProductsByUserId(Request $request, $id){
-        $page = $request->query("page");
-        $size = $request->query("size");
-        if(!$page)
-            $page = 1;
-        if(!$size)
-            $size = 12;
-        $order = $request->query("order");
-        if(!$order)
-            $order = -1;
-        $o_column = "";
-        $o_order = "";
-        switch($order) {
-            case 1:
-                $o_column = "created_at";
-                $o_order = "DESC";
-                break;
-            case 2:
-                $o_column = "created_at";
-                $o_order = "ASC";
-                break;
-            case 3:
-                $o_column = "regular_price";
-                $o_order = "ASC";
-                break;  
-            case 4:
-                $o_column = "regular_price";
-                $o_order = "DESC";
-                break;
-            default:
-                $o_column = "id";
-                $o_order = "DESC";
-        }   
+    public function getAllProductsByUserId(Request $request, $id)
+    {
+        // Fetch and sanitize pagination and size
+        $page = $request->query('page', 1);
+        $size = $request->query('size', 12);
     
-        $categories = Category::orderBy("name", "ASC")->get();
-        $q_categories = $request->query("categories");  
-        $prange = $request->query("prange");
-        if(!$prange)
-            $prange = "0,500";
-        $from  = explode(",",$prange)[0];
-        $to  = explode(",",$prange)[1];
-        $products = Product::where(function($query) use($q_categories) {
-                $query->whereIn('category_id', explode(',', $q_categories))
-                    ->orWhereRaw("'".$q_categories."'=''");
+        // Determine sorting order
+        $order = $request->query('order', -1);
+        $sortingOptions = [
+            1 => ['created_at', 'DESC'],
+            2 => ['created_at', 'ASC'],
+            3 => ['regular_price', 'ASC'],
+            4 => ['regular_price', 'DESC'],
+        ];
+        [$o_column, $o_order] = $sortingOptions[$order] ?? ['id', 'DESC'];
+    
+        // Fetch categories for filtering
+        $categories = Category::orderBy('name', 'ASC')->get();
+        $q_categories = $request->query('categories', '');
+    
+        // Fetch price range for filtering
+        $prange = $request->query('prange', '0,500');
+        [$from, $to] = explode(',', $prange);
+    
+        // Build the products query
+        $products = Product::where(function ($query) use ($q_categories) {
+                if ($q_categories) {
+                    $query->whereIn('category_id', explode(',', $q_categories));
+                }
             })
-            ->whereBetween('regular_price', array($from, $to))
-            ->where('user_id', $id) 
-            ->orderBy('created_at', 'DESC')
+            ->whereBetween('regular_price', [$from, $to])
+            ->where('user_id', $id)
             ->orderBy($o_column, $o_order)
             ->paginate($size);
-            
-        return view('users.product.listproduct', [
+    
+            // dd($products);
+            return view('users.product.listproduct', [
             'products' => $products,
             'page' => $page,
             'size' => $size,
@@ -82,20 +67,20 @@ class UserController extends Controller
             'q_categories' => $q_categories,
             'from' => $from,
             'to' => $to
-        ]); 
+        ]);
     }
 
+
+    // public function createProducts(){
+    //         $categories = Category::all();
+           
+    //         return view('users.product.create-products', compact('categories'));
+    // }
 
     public function createProducts(){
-            $categories = Category::all();
-           
-            return view('users.product.create-products', compact('categories'));
-    }
-
-    public function testcreateProducts(){
         $categories = Category::all();
        
-        return view('test', compact('categories'));
+        return view('users.product.create-products', compact('categories'));
 }
 
    
@@ -313,5 +298,80 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('user.profile')->with('success', 'Votre mot de passe a été réinitialisé avec succès.');
+    }
+
+
+    public function editProducts($id){
+        $product = Product::find($id);
+        $categories = Category::all();
+        // $brands = Brand::all();
+        return view('users.product.update-product', compact('product' , 'categories'));
+    }
+
+    public function UpdateProduct(Request $request, $id)
+    {
+        // Find the existing product
+        $product = Product::findOrFail($id);
+
+        // Validate the input data
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:products,slug,' . $product->id,
+            'short_description' => 'nullable|string',
+            'description' => 'nullable|string',
+            'regular_price' => 'required|numeric',
+            'stock_status' => 'required|string',
+            'featured' => 'nullable|boolean',
+            'category_id' => 'required|exists:categories,id',
+            'categorie_product' => 'nullable|string',
+            'split_input' => 'required|array',
+            'split_input.*.attribute' => 'required|string|max:255',
+            'split_input.*.value' => 'required|string|max:255'
+        ]);
+
+        // Update the product with validated data
+        $product->update($validatedData);
+
+        // Update images if new files are uploaded
+        if ($files = $request->file('imagess')) {
+            // Remove existing images if needed (optional)
+            ProductImage::where('product_id', $product->id)->delete();
+
+            $imageData = [];
+            foreach ($files as $key => $file) {
+                $extension = $file->getClientOriginalExtension();
+                $filename = $key . '_' . time() . '.' . $extension;
+
+                // Store the image using the store method and obtain the storage path
+                $path = $file->store('assets/images/fashion/product/front', 'public');
+
+                $imageData[] = [
+                    'product_id' => $product->id,
+                    'image' => $path,
+                ];
+            }
+
+            // Insert new images
+            ProductImage::insert($imageData);
+        }
+
+        // Update specifications
+        ProductSpecification::where('product_id', $product->id)->delete();
+
+        $specifications = [];
+        foreach ($request->input('split_input') as $specification) {
+            $specifications[] = [
+                'product_id' => $product->id,
+                'attribute' => $specification['attribute'],
+                'value' => $specification['value'],
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+        }
+
+        // Insert new specifications
+        ProductSpecification::insert($specifications);
+
+        return redirect()->route('user.listproducts' ,['id' => Auth::id()])->with('success', 'Product updated successfully.');
     }
 }

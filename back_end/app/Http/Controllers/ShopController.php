@@ -15,66 +15,49 @@ use Illuminate\Support\Facades\Validator;
 
 class ShopController extends Controller
 {
-    public function index(Request $request)
-    {       
-        $page = $request->query("page");
-        $size = $request->query("size");
-        if(!$page)
-                $page = 1;
-        if(!$size)
-                $size = 12;
-        $order = $request->query("order");
-        if(!$order)
-        $order = -1;
-        $o_column = "";
-        $o_order = "";
-        switch($order)
+        public function index(Request $request)
         {
-        case 1:
-                $o_column = "created_at";
-                $o_order = "DESC";
-                break;
-        case 2:
-                $o_column = "created_at";
-                $o_order = "ASC";
-                break;
-        case 3:
-                $o_column = "regular_price";
-                $o_order = "ASC";
-                break;  
-        case 4:
-                $o_column = "regular_price";
-                $o_order = "DESC";
-                break;
-        default:
-                $o_column = "id";
-                $o_order = "DESC";
-
-        }   
+            $page = $request->query('page', 1);
+            $size = $request->query('size', 12);
+            $order = $request->query('order', -1);
         
-
-        $gategorieIds = Product::where('categorie_product', 'VET')->distinct()->pluck('category_id');
-        $categories = Category::whereIn('id', $gategorieIds)->orderBy('name','ASC')->get();
-        $q_categories = $request->query("categories");  
-
-        $prange = $request->query("prange");
-        if(!$prange)
-            $prange = "0,500";
-        $from  = explode(",",$prange)[0];
-        $to  = explode(",",$prange)[1];
-        $products = Product::where('categorie_product', 'VET')
-                                ->where('featured', 1)
-                                
-                                ->where(function($query) use($q_categories){
-                                $query->whereIn('category_id',explode(',',$q_categories))
-                                        ->orWhereRaw("'".$q_categories."'=''");
-                                })
-                                ->whereBetween('regular_price',array($from,$to))
-                                ->orderBy('created_at','DESC')
-                                ->orderBy($o_column,$o_order)
-                                ->paginate($size);
-        return view('shop',['products'=>$products,'page'=>$page,'size'=>$size,'order'=>$order,'categories'=>$categories,'q_categories'=>$q_categories,'from'=>$from,'to'=>$to]);   
-    }
+            $sortingOptions = [
+                1 => ['created_at', 'DESC'],
+                2 => ['created_at', 'ASC'],
+                3 => ['regular_price', 'ASC'],
+                4 => ['regular_price', 'DESC'],
+            ];
+            [$o_column, $o_order] = $sortingOptions[$order] ?? ['id', 'DESC'];
+        
+            $gategorieIds = Product::where('categorie_product', 'VET')->distinct()->pluck('category_id');
+            $categories = Category::whereIn('id', $gategorieIds)->orderBy('name', 'ASC')->get();
+        
+            $q_categories = $request->query('categories', '');
+            $prange = $request->query('prange', '0,500');
+            [$from, $to] = explode(',', $prange);
+        
+            $products = Product::where('categorie_product', 'VET')
+                ->where(function($query) use($q_categories) {
+                    if ($q_categories) {
+                        $query->whereIn('category_id', explode(',', $q_categories));
+                    }
+                })
+                ->whereBetween('regular_price', [$from, $to])
+                ->orderBy($o_column, $o_order)
+                ->paginate($size);
+        
+            return view('shop', [
+                'products' => $products,
+                'page' => $page,
+                'size' => $size,
+                'order' => $order,
+                'categories' => $categories,
+                'q_categories' => $q_categories,
+                'from' => $from,
+                'to' => $to,
+            ]);
+        }
+        
 
     public function shopInformatique(Request $request)
     {       

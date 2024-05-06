@@ -8,7 +8,8 @@
     <a href="{{ route('user.approvedlist', ['id' => Auth::id()]) }}" class="btn btn-warning mt-5">Products Approved</a>
     <a href="{{ route('user.rejectedlist', ['id' => Auth::id()]) }}" class="btn btn-warning mt-5">Products Rejected</a>
     <a href="{{ route('user.reset', ['id' => Auth::id()]) }}" class="btn btn-warning mt-5">Password Reset</a>
-    <a href="{{ route('user.testStore', ['id' => Auth::id()]) }}" class="btn btn-warning mt-5">Password Reset</a>
+    <a href="{{ route('user.CreateProducts', ['id' => Auth::id()]) }}" class="btn btn-warning mt-5">Add product</a>
+
 
 
     @else

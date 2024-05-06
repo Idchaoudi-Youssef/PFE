@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use App\Models\ProductSpecification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -203,41 +204,45 @@ class AdminController extends Controller
             'category_id' => 'required|exists:categories,id',
             'categorie_product' => 'nullable|string',
             'user_id' => 'required|exists:users,id',
+            'split_input' => 'required|array',
+            'split_input.*.attribute' => 'required|string|max:255',
+            'split_input.*.value' => 'required|string|max:255'
         ]);
-    
-        // Traiter l'image principale
-        // if ($request->hasFile('image')) {
-        //     $imagePath = $request->file('image')->store('assets/images/fashion/product/front', 'public');
-        //     $validatedData['image'] = $imagePath;
-        //     $validatedData['images'] = $imagePath;
-        // }
-    
-        // Créer le produit
+
         $validatedData['user_id'] = Auth::id();
         $product = Product::create($validatedData);
-    
-        // Traiter les images multiples
+
         if ($files = $request->file('imagess')) {
             $imageData = [];
             foreach ($files as $key => $file) {
                 $extension = $file->getClientOriginalExtension();
                 $filename = $key . '_' . time() . '.' . $extension;
                 
-                // Déplacer le fichier vers le stockage Laravel
                 $path = $file->store('assets/images/fashion/product/front', 'public');
                 
-                // Enregistrement de l'image dans la base de données
                 $imageData[] = [
                     'product_id' => $product->id,
                     'image' => $path, // Le chemin du fichier dans le stockage Laravel
                 ];
             }
         
-            // Assurez-vous que le modèle ProductImage existe et peut recevoir les images multiples
             ProductImage::insert($imageData);
         }
-        // dd($product,$imageData);
-        // Redirection avec succès
+
+        $specifications = [];
+        foreach ($request->input('split_input') as $specification) {
+            $specifications[] = [
+                'product_id' => $product->id,
+                'attribute' => $specification['attribute'],
+                'value' => $specification['value'],
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+        }
+
+        // Insert specifications into the database
+        ProductSpecification::insert($specifications);
+        
         return redirect()->route('admin.Verifiedproducts')->with('success', 'Product created successfully.');
     }
        
@@ -420,51 +425,78 @@ class AdminController extends Controller
 
     public function editProducts($id){
         $product = Product::find($id);
-        // $categories = Category::all();
+        $categories = Category::all();
         // $brands = Brand::all();
         return view('admin.product.update-product', compact('product' , 'categories'));
     }
 
     
 
-    public function UpdateProduct(Request $request, $id){
-        $product = Product::find($id);
+    public function UpdateProduct(Request $request, $id)
+    {
+        // Find the existing product
+        $product = Product::findOrFail($id);
 
+        // Validate the input data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255',
-            'short_description' => 'string',
-            'description' => 'string',
-            'regular_price' => 'numeric',
-            'stock_status' => 'string',
-            'featured' => 'boolean',
+            'slug' => 'required|string|max:255|unique:products,slug,' . $product->id,
+            'short_description' => 'nullable|string',
+            'description' => 'nullable|string',
+            'regular_price' => 'required|numeric',
+            'stock_status' => 'required|string',
+            'featured' => 'nullable|boolean',
             'category_id' => 'required|exists:categories,id',
             'categorie_product' => 'nullable|string',
-
+            'split_input' => 'required|array',
+            'split_input.*.attribute' => 'required|string|max:255',
+            'split_input.*.value' => 'required|string|max:255'
         ]);
 
+        // Update the product with validated data
         $product->update($validatedData);
 
-    
-        if ($files = $request->file('images')) {
+        // Update images if new files are uploaded
+        if ($files = $request->file('imagess')) {
+            // Remove existing images if needed (optional)
+            ProductImage::where('product_id', $product->id)->delete();
+
             $imageData = [];
             foreach ($files as $key => $file) {
                 $extension = $file->getClientOriginalExtension();
                 $filename = $key . '_' . time() . '.' . $extension;
-                $path = "assets/images/fashion/product/back/";
-    
-                $file->move($path, $filename);
+
+                // Store the image using the store method and obtain the storage path
+                $path = $file->store('assets/images/fashion/product/front', 'public');
+
                 $imageData[] = [
                     'product_id' => $product->id,
-                    'image' => $path . $filename,
+                    'image' => $path,
                 ];
             }
-    
+
+            // Insert new images
             ProductImage::insert($imageData);
         }
-        
-        return redirect()->route('admin.Verifiedproducts')->with('success', 'Product created successfully.');
 
+        // Update specifications
+        ProductSpecification::where('product_id', $product->id)->delete();
+
+        $specifications = [];
+        foreach ($request->input('split_input') as $specification) {
+            $specifications[] = [
+                'product_id' => $product->id,
+                'attribute' => $specification['attribute'],
+                'value' => $specification['value'],
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+        }
+
+        // Insert new specifications
+        ProductSpecification::insert($specifications);
+
+        return redirect()->route('admin.Verifiedproducts')->with('success', 'Product updated successfully.');
     }
 
     public function dashboard ()

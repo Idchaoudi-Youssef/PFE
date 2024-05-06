@@ -192,7 +192,7 @@
                     <div class="cart-wrap">
                         <ul>
                             <li>
-                                <a href="{{ route('admin.editProduct', ['id' => $product->id]) }}" class="icon">
+                                <a href="{{ route('user.editProduct', ['id' => $product->id]) }}" class="icon">
                                     <i class="fas fa-edit"></i>
                                 </a>                                
                             </li>

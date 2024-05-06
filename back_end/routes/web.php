@@ -121,6 +121,10 @@ Route::get('/user/{id}/rejectedproducts', [UserController::class, 'rejectedListP
 
 
 Route::get('/user-AddProducts',[UserController::class,'createProducts'])->name('user.CreateProducts');
+Route::get('/user-edit/{id}', [UserController::class, 'editProducts'])->name('user.editProduct');
+Route::put('/user-UpdateProduct/{id}', [UserController::class, 'updateProduct'])->name('user.UpdateProduct');
+
+
 
 Route::post('/User-StoreProducts',[UserController::class,'storeProducts'])->name('user.StoreProduct');
 
@@ -154,5 +158,5 @@ Route::get('/test' ,  function () {
 
 
 
-Route::get('/user-AddProductss',[UserController::class,'testcreateProducts'])->name('user.testStore');
-Route::post('/User-StoreProductss',[UserController::class,'storeProducts'])->name('user.StoreProduct');
+// Route::get('/user-AddProductss',[UserController::class,'testcreateProducts'])->name('user.testStore');
+// Route::post('/User-StoreProductss',[UserController::class,'storeProducts'])->name('user.StoreProduct');
